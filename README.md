@@ -1,0 +1,1 @@
+https://medium.com/nuances-of-programming/инъекция-зависимостей-на-android-с-помощью-hilt-f2c4ac05cb57

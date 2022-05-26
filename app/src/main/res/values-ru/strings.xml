@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">OpenWeatherApp</string>
+    <string name="next_forecast">Прогноз на завтра</string>
+    <string name="today">Сегодня</string>
+    <string name="condition_of_city">Погода города</string>
+    <string name="get_my_current_location">Получить мою геолокацию</string>
+    <string name="search_city_weather">Найти город</string>
+    <string name="city_info">Информация о городе</string>
+    <string name="weather_status">Статус погоды</string>
+    <string name="feels_like_30">чувствуется как 30</string>
+    <string name="wind_icon_image">Иконка ветра</string>
+    <string name="humidity_icon_image">Иконка влажности</string>
+    <string name="logo_image">Иконка лого</string>
+</resources>
