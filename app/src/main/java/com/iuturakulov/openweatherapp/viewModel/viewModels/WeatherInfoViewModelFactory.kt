@@ -2,11 +2,11 @@ package com.iuturakulov.openweatherapp.viewModel.viewModels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.iuturakulov.openweatherapp.App
+import com.iuturakulov.openweatherapp.MyApp
 
-class MainActivityViewModelFactory(private val application: App) :
+class WeatherInfoViewModelFactory(private val application: MyApp) :
     ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        return MainActivityViewModel(application.weatherModel, application.preferenceStorage) as T
+        return WeatherInfoViewModel(application.weatherModel, application.preferenceStorage) as T
     }
 }

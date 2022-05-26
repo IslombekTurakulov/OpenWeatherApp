@@ -1,6 +1,6 @@
 package com.iuturakulov.openweatherapp.utils
 
-import com.google.android.material.textfield.TextInputEditText
+import androidx.appcompat.app.AppCompatDelegate
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -16,6 +16,12 @@ fun Long.unixTimestampToDateTimeString(): String {
     }
     return this.toString()
 }
+
+fun setTheme(flag: Boolean) = when {
+    flag -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+    else -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+}
+
 
 fun Double.kelvinToCelsius(): Int {
     return (this - 273.15).toInt()

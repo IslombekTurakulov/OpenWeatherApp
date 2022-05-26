@@ -2,37 +2,33 @@ package com.iuturakulov.openweatherapp.model.models
 
 import com.google.gson.annotations.SerializedName
 
-class WeatherForecast {
+data class WeatherForecast(
     @SerializedName("coord")
-    var coord: Coord? = null
-
-    @SerializedName("sys")
-    var sys: Sys? = null
-
+    val coord: Coord,
     @SerializedName("weather")
-    var weather: ArrayList<Weather> = arrayListOf()
-
+    val weather: List<Weather>,
+    @SerializedName("base")
+    val base: String,
     @SerializedName("main")
-    var main: Main? = null
-
+    val main: Main,
+    @SerializedName("visibility")
+    val visibility: Long,
     @SerializedName("wind")
-    var wind: Wind? = null
-
-    @SerializedName("rain")
-    var rain: Rain? = null
-
+    val wind: Wind,
     @SerializedName("clouds")
-    var clouds: Clouds? = null
-
+    val clouds: Clouds,
     @SerializedName("dt")
-    var dt = 0L
-
+    val dt: Long,
+    @SerializedName("sys")
+    val sys: Sys,
+    @SerializedName("timezone")
+    val timezone: Long,
     @SerializedName("id")
-    var id = 0
-
+    val id: Long,
     @SerializedName("name")
-    var name: String? = null
-
+    val name: String,
     @SerializedName("cod")
-    var cod = 0f
-}
+    val cod: Long
+)
+
+

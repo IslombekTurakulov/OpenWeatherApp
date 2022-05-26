@@ -1,6 +1,6 @@
 package com.iuturakulov.openweatherapp.api
 
-import android.app.appsearch.SearchResults
+import com.iuturakulov.openweatherapp.model.models.SearchResults
 import com.iuturakulov.openweatherapp.model.models.WeatherForecast
 import retrofit2.Response
 import javax.inject.Inject

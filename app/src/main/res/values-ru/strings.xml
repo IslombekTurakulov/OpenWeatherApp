@@ -8,8 +8,12 @@
     <string name="search_city_weather">Найти город</string>
     <string name="city_info">Информация о городе</string>
     <string name="weather_status">Статус погоды</string>
-    <string name="feels_like_30">чувствуется как 30</string>
+    <string name="feels_like_30">Чувствуется как</string>
     <string name="wind_icon_image">Иконка ветра</string>
     <string name="humidity_icon_image">Иконка влажности</string>
     <string name="logo_image">Иконка лого</string>
+    <string name="info_menu_text">Погода</string>
+    <string name="settings_menu_text">Настройки</string>
+    <string name="dark_theme">Тёмная тема</string>
+    <string name="language_settings">Язык</string>
 </resources>

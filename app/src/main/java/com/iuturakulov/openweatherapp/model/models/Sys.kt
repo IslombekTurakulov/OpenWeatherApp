@@ -2,13 +2,15 @@ package com.iuturakulov.openweatherapp.model.models
 
 import com.google.gson.annotations.SerializedName
 
-class Sys {
+data class Sys(
+    @SerializedName("type")
+    val type: Long,
+    @SerializedName("id")
+    val id: Long,
     @SerializedName("country")
-    var country: String? = null
-
+    val country: String,
     @SerializedName("sunrise")
-    var sunrise: Long = 0
-
+    val sunrise: Long,
     @SerializedName("sunset")
-    var sunset: Long = 0
-}
+    val sunset: Long
+)

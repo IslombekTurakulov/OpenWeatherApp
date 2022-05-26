@@ -1,14 +1,11 @@
 package com.iuturakulov.openweatherapp.api
 
-import android.app.appsearch.SearchResults
+import com.iuturakulov.openweatherapp.model.models.SearchResults
 import com.iuturakulov.openweatherapp.model.models.Weather
 import com.iuturakulov.openweatherapp.model.models.WeatherForecast
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Query
-import com.squareup.moshi.JsonClass
-
-import com.squareup.moshi.Json
 
 
 interface ApiService {

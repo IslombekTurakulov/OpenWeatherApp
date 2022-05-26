@@ -2,10 +2,11 @@ package com.iuturakulov.openweatherapp.model.models
 
 import com.google.gson.annotations.SerializedName
 
-class Wind {
+data class Wind(
     @SerializedName("speed")
-    var speed = 0f
-
+    val speed: Double,
     @SerializedName("deg")
-    var deg = 0f
-}
+    val deg: Long,
+    @SerializedName("gust")
+    val gust: Double
+)

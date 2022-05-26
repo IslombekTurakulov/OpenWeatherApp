@@ -5,7 +5,7 @@ import com.iuturakulov.openweatherapp.viewModel.viewModels.WeatherInfoShowModelI
 import com.iuturakulov.openweatherapp.storage.SharedPreferencesStorage
 import timber.log.Timber
 
-class App : Application() {
+class MyApp : Application() {
 
     val appComponent: ApplicationComponent by lazy {
         DaggerApplicationComponent.factory().create(applicationContext)

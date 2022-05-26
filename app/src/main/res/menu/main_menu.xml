@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-
     <item
-        android:id="@+id/tab_home"
-        android:icon="@drawable/baseline_foggy_24"
-        android:title="Main" />
+        android:id="@+id/first_fragment"
+        android:icon="@drawable/ic_cloud"
+        android:title="Weather" />
     <item
-        android:id="@+id/tab_alarm"
+        android:id="@+id/second_fragment"
         android:icon="@drawable/baseline_settings_suggest_24"
         android:title="Settings" />
 </menu>

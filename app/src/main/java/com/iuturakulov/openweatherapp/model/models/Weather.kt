@@ -2,16 +2,13 @@ package com.iuturakulov.openweatherapp.model.models
 
 import com.google.gson.annotations.SerializedName
 
-class Weather {
+data class Weather(
     @SerializedName("id")
-    var id = 0
-
+    val id: Long,
     @SerializedName("main")
-    var main: String? = null
-
+    val main: String,
     @SerializedName("description")
-    var description: String? = null
-
+    val description: String,
     @SerializedName("icon")
-    var icon: String? = null
-}
+    val icon: String
+)

@@ -2,10 +2,9 @@ package com.iuturakulov.openweatherapp.model.models
 
 import com.google.gson.annotations.SerializedName
 
-class Coord {
+data class Coord(
     @SerializedName("lon")
-    var lon = 0f
-
+    val lon: Double,
     @SerializedName("lat")
-    var lat = 0f
-}
+    val lat: Double
+)

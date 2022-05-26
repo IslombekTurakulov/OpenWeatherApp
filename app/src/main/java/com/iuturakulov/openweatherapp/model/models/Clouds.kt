@@ -2,7 +2,7 @@ package com.iuturakulov.openweatherapp.model.models
 
 import com.google.gson.annotations.SerializedName
 
-class Clouds {
+data class Clouds(
     @SerializedName("all")
-    var all = 0f
-}
+    val all: Long
+)

@@ -7,7 +7,10 @@ class WeatherData(
     var weatherConditionIconUrl: String = "",
     var weatherConditionIconDescription: String = "",
     var humidity: String = "",
-    var pressure: String = "",
+    var wind: String = "",
+    var feelsLike: String = "",
     var sunrise: String = "",
-    var sunset: String = ""
+    var sunset: String = "",
+    var tempMin : String = "",
+    var tempMax : String = "",
 )
