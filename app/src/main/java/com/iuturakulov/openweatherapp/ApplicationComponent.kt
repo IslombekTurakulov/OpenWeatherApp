@@ -4,7 +4,6 @@ import android.content.Context
 import com.iuturakulov.openweatherapp.view.activities.MainActivity
 import com.iuturakulov.openweatherapp.view.activities.SplashActivity
 import com.iuturakulov.openweatherapp.view.fragments.SettingsFragment
-import com.iuturakulov.openweatherapp.view.fragments.WeatherInfoFragment
 
 import dagger.BindsInstance
 import dagger.Component
@@ -23,5 +22,4 @@ interface ApplicationComponent {
     fun inject(activity: MainActivity)
     fun inject(activity: SplashActivity)
     fun inject(fragment: SettingsFragment)
-    fun inject(fragment: WeatherInfoFragment)
 }

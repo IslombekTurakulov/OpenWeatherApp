@@ -25,7 +25,6 @@ object RetroFitInstance {
                             .addConverterFactory(GsonConverterFactory.create(gson))
                             .client(client)
                             .build()
-
                     }
                 }
             }

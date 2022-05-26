@@ -7,25 +7,25 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.iuturakulov.openweatherapp.R
-import com.iuturakulov.openweatherapp.model.models.Weather
+import com.iuturakulov.openweatherapp.model.models.DailyForecast
 import kotlinx.android.synthetic.main.next_weather_item.view.*
 import timber.log.Timber
 
 class DailyAdapter(
     val context: Context,
-    var dailyForecast: ArrayList<Weather>
+    var dailyForecast: List<DailyForecast>
 ) : RecyclerView.Adapter<DailyAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        var vh: ViewHolder? = null
+        var viewHolder: ViewHolder? = null
         try {
             val view: View =
                 LayoutInflater.from(context).inflate(R.layout.next_weather_item, parent, false)
-            vh = ViewHolder(context, view)
+            viewHolder = ViewHolder(context, view)
         } catch (e: Exception) {
             Timber.e(e.message!!)
         }
-        return vh!!
+        return viewHolder!!
     }
 
     override fun getItemCount() = dailyForecast.size
@@ -35,19 +35,15 @@ class DailyAdapter(
         holder.bind(forecast)
     }
 
-    fun addData(users: List<Weather>) {
-        dailyForecast.addAll(users)
-    }
-
     class ViewHolder(
         val context: Context,
         val view: View,
     ) : RecyclerView.ViewHolder(view.rootView) {
-        fun bind(forecast: Weather) {
+        fun bind(forecast: DailyForecast) {
             with(forecast) {
-                itemView.nextDayText.text = this.main
+                itemView.nextDayText.text = this.weather[0].main
                 val weatherIconUrl =
-                    "https://openweathermap.org/img/wn/${this.icon}@2x.png"
+                    "https://openweathermap.org/img/wn/${this.weather[0].icon}@2x.png"
                 Glide.with(context)
                     .load(weatherIconUrl)
                     .override(150, 150)

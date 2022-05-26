@@ -1,7 +1,7 @@
 package com.iuturakulov.openweatherapp
 
 import android.app.Application
-import com.iuturakulov.openweatherapp.viewModel.viewModels.WeatherInfoShowModelImpl
+import com.iuturakulov.openweatherapp.viewModel.viewModels.WeatherInfoRequestModelImpl
 import com.iuturakulov.openweatherapp.storage.SharedPreferencesStorage
 import timber.log.Timber
 
@@ -23,7 +23,7 @@ class MyApp : Application() {
         SharedPreferencesStorage(this)
     }
     val weatherModel by lazy {
-        WeatherInfoShowModelImpl()
+        WeatherInfoRequestModelImpl()
     }
 
 }

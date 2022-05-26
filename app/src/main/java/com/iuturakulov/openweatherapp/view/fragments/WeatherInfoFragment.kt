@@ -1,3 +1,4 @@
+/*
 package com.iuturakulov.openweatherapp.view.fragments
 
 import android.Manifest
@@ -46,24 +47,22 @@ class WeatherInfoFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+*/
 /*        GpsUtils(requireActivity()).turnOnGps(object : GpsUtils.OnGpsListener {
             override fun gpsStatus(isGPSEnabled: Boolean) {
                 isGps = isGPSEnabled
                 if (isGps)
                     getLocation()
             }
-        })*/
+        })*//*
+
         // locUtils = LocationUtils(requireContext())
         weatherInfoViewModel = WeatherInfoViewModelFactory(requireActivity().application as MyApp).create(WeatherInfoViewModel::class.java)
         current_location.setOnClickListener {
                 getLocation()
         }
-        weatherInfoViewModel.getWeatherInfoLiveData.observe(viewLifecycleOwner) { it2 ->
-            setWeatherInfo(it2)
-        }
         val country = "Moscow"
-        weatherInfoViewModel.getByCityName(country)
-        setupObserver()
+        weatherInfoViewModel.getWeatherInfo(country)
         dailyAdapter = DailyAdapter(requireContext(), arrayListOf())
         hourlyAdapter = HourlyAdapter(requireContext(), arrayListOf())
         rvNextWeather.adapter = dailyAdapter
@@ -71,23 +70,15 @@ class WeatherInfoFragment : Fragment() {
     }
 
     val weatherRequest: (address: MutableList<Address>) -> Unit = {
-        /* val lat = it[0].latitude
+        */
+/* val lat = it[0].latitude
          val long = it[0].longitude
-         val locality = it[0].locality*/
+         val locality = it[0].locality*//*
+
         // val country = it[0].countryName
         val country = "Moscow"
         weatherInfoViewModel.getWeatherInfo(country)
         weatherInfoViewModel.getByCityName(country)
-        setupObserver()
-    }
-
-    private fun setupObserver() {
-        weatherInfoViewModel.getWeatherHourlyLiveData.observe(this) {
-            it.let { users ->
-                dailyAdapter.addData(users)
-                dailyAdapter.notifyDataSetChanged()
-            }
-        }
     }
 
     private fun getLocation() {
@@ -102,9 +93,11 @@ class WeatherInfoFragment : Fragment() {
             )
                     == PackageManager.PERMISSION_GRANTED)
         ) {
-           /* /locUtils.address.observeOnce(this@WeatherInfoFragment) {
+           */
+/* /locUtils.address.observeOnce(this@WeatherInfoFragment) {
                 weatherRequest(it as MutableList<Address>)
-            }*/
+            }*//*
+
         } else
             ActivityCompat.requestPermissions(
                 requireActivity(), arrayOf(
@@ -135,4 +128,4 @@ class WeatherInfoFragment : Fragment() {
             }
         })
     }
-}
+}*/

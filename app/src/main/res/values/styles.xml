@@ -7,6 +7,10 @@
         <item name="android:windowBackground">@color/background</item>
     </style>
 
+    <style name="MyAppTheme.TextInputLayout" parent="@android:style/TextAppearance">
+        <item name="android:textColor">@color/hse_red</item>
+    </style>
+
     <style name="style_for_search_bar" parent="android:Widget.EditText">
         <item name="android:background">@color/white</item>
         <item name="android:drawableLeft">@drawable/ic_search</item>

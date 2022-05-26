@@ -13,9 +13,12 @@ import kotlinx.coroutines.Dispatchers.Default
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.Dispatchers.Main
 import java.util.*
-import javax.inject.Inject
 
-class LocationUtils @Inject constructor(@ApplicationContext private val context: Context) {
+
+/**
+ * @see https://stackoverflow.com/a/59663897
+ */
+class LocationUtils constructor(@ApplicationContext private val context: Context) {
     private val fusedLocationProvider: FusedLocationProviderClient =
         LocationServices.getFusedLocationProviderClient(context)
     val locationScope = Main + Job()
@@ -49,7 +52,7 @@ class LocationUtils @Inject constructor(@ApplicationContext private val context:
                         }
                     }
                 }
-                // fusedLocationProvider.requestLocationUpdates(locationRequest, locationCallback, null)
+                LocationServices.getFusedLocationProviderClient(context).requestLocationUpdates(locationRequest, locationCallback, null)
             }
         }
 
@@ -57,16 +60,14 @@ class LocationUtils @Inject constructor(@ApplicationContext private val context:
 
     private val locationCallback: LocationCallback = object : LocationCallback() {
         override fun onLocationResult(p0: LocationResult) {
-            p0?.let {
+            p0.let {
                 val location = it.lastLocation
-
                 CoroutineScope(locationScope).launch {
                     val geocoder = Geocoder(context, Locale.getDefault())
                     withContext(IO) {
                         val address = geocoder.getFromLocation(location.latitude,
                             location.longitude, 1)
                         _address.postValue(address)
-
                         locationScope.cancel()
                     }
                 }
