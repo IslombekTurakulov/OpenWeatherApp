@@ -1,4 +1,3 @@
-/*
 package com.iuturakulov.openweatherapp.view.fragments
 
 import android.Manifest
@@ -8,77 +7,71 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
+import android.widget.TextView
+import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
-import com.iuturakulov.openweatherapp.MyApp
 import com.iuturakulov.openweatherapp.R
-import com.iuturakulov.openweatherapp.model.models.WeatherData
+import com.iuturakulov.openweatherapp.model.models.DailyForecast
+import com.iuturakulov.openweatherapp.model.models.HourlyForecast
+import com.iuturakulov.openweatherapp.model.models.SearchResults
+import com.iuturakulov.openweatherapp.model.models.Weather
+import com.iuturakulov.openweatherapp.utils.*
 import com.iuturakulov.openweatherapp.view.adapters.DailyAdapter
 import com.iuturakulov.openweatherapp.view.adapters.HourlyAdapter
 import com.iuturakulov.openweatherapp.viewModel.viewModels.WeatherInfoViewModel
-import com.iuturakulov.openweatherapp.viewModel.viewModels.WeatherInfoViewModelFactory
 import kotlinx.android.synthetic.main.fragment_weather_info.*
-import javax.inject.Inject
 
 
 class WeatherInfoFragment : Fragment() {
 
-    @Inject
-    lateinit var weatherInfoViewModel: WeatherInfoViewModel
-
     private val REQUEST_LOCATION_CODE = 1
+    private val weatherInfoViewModel: WeatherInfoViewModel by viewModels()
+    private lateinit var locUtils: LocationUtils
     private var isGps = false
     private lateinit var location: String
-    private lateinit var dailyAdapter : DailyAdapter
-    private lateinit var hourlyAdapter : HourlyAdapter
+    private lateinit var city: String
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        (requireActivity().application as MyApp).appComponent.inject(this)
         return inflater.inflate(R.layout.fragment_weather_info, container, false)
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-*/
-/*        GpsUtils(requireActivity()).turnOnGps(object : GpsUtils.OnGpsListener {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        GpsUtils(requireActivity()).turnOnGps(object : GpsUtils.OnGpsListener {
             override fun gpsStatus(isGPSEnabled: Boolean) {
                 isGps = isGPSEnabled
                 if (isGps)
                     getLocation()
             }
-        })*//*
-
-        // locUtils = LocationUtils(requireContext())
-        weatherInfoViewModel = WeatherInfoViewModelFactory(requireActivity().application as MyApp).create(WeatherInfoViewModel::class.java)
-        current_location.setOnClickListener {
-                getLocation()
-        }
-        val country = "Moscow"
-        weatherInfoViewModel.getWeatherInfo(country)
-        dailyAdapter = DailyAdapter(requireContext(), arrayListOf())
-        hourlyAdapter = HourlyAdapter(requireContext(), arrayListOf())
-        rvNextWeather.adapter = dailyAdapter
-        rvWeather.adapter = hourlyAdapter
+        })
     }
 
-    val weatherRequest: (address: MutableList<Address>) -> Unit = {
-        */
-/* val lat = it[0].latitude
-         val long = it[0].longitude
-         val locality = it[0].locality*//*
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        searchBar.setOnEditorActionListener(
+            TextView.OnEditorActionListener { v, actionId, event ->
+                if ((actionId == EditorInfo.IME_ACTION_SEARCH || actionId == EditorInfo.IME_ACTION_DONE) && (event == null || !event.isShiftPressed)) {
+                    city = searchBar.text.toString()
+                    initSearchObserver(city)
+                    return@OnEditorActionListener true
+                }
+                false
+            })
 
-        // val country = it[0].countryName
-        val country = "Moscow"
-        weatherInfoViewModel.getWeatherInfo(country)
-        weatherInfoViewModel.getByCityName(country)
+        current_location.setOnClickListener {
+            getLocation()
+        }
     }
 
     private fun getLocation() {
@@ -93,11 +86,9 @@ class WeatherInfoFragment : Fragment() {
             )
                     == PackageManager.PERMISSION_GRANTED)
         ) {
-           */
-/* /locUtils.address.observeOnce(this@WeatherInfoFragment) {
+            locUtils.address.observeOnce(this) {
                 weatherRequest(it as MutableList<Address>)
-            }*//*
-
+            }
         } else
             ActivityCompat.requestPermissions(
                 requireActivity(), arrayOf(
@@ -107,17 +98,101 @@ class WeatherInfoFragment : Fragment() {
             )
     }
 
-    private fun setWeatherInfo(info: WeatherData) {
-        tempText.text = info.temperature
-        cityNameText.text = "${info.cityAndCountry}, ${info.dateTime}"
-        Glide.with(requireContext()).load(info.weatherConditionIconUrl.replace("http", "https"))
-            .into(curConditionIcon)
-        conditionText.text = info.weatherConditionIconDescription
-        feelsLikeText.text = info.feelsLike
-        humidityText.text = info.humidity
-        windText.text = info.wind
-        maxText.text = info.tempMax
-        minText.text = info.tempMin
+    private val weatherRequest: (address: MutableList<Address>) -> Unit = {
+        val local = it[0].locality
+        val country = it[0].countryName
+        location = "$local, $country"
+        cityNameText.text = "$local $country"
+        initObserver(location, it[0].latitude, it[0].longitude)
+    }
+
+    private fun initObserver(location: String, latitude: Double, longitude: Double) {
+        weatherInfoViewModel.getWeatherData(latitude, longitude)
+        weatherInfoViewModel.weatherData.observe(viewLifecycleOwner) {
+            when (it.status) {
+                Status.SUCCESS -> {
+                    Toast.makeText(requireContext(), "Success", Toast.LENGTH_SHORT).show()
+                    bindViews(it.data?.body()!!)
+                }
+                Status.LOADING -> {
+                    Toast.makeText(requireContext(), "Loading...", Toast.LENGTH_SHORT).show()
+                }
+                Status.ERROR -> {
+                    Toast.makeText(requireContext(), "Error", Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+        weatherInfoViewModel.searchLocationData(location)
+        weatherInfoViewModel.searchData.observe(viewLifecycleOwner) {
+            when (it.status) {
+                Status.SUCCESS -> {
+
+                }
+                Status.LOADING -> {
+
+                }
+                Status.ERROR -> {
+
+                }
+            }
+        }
+    }
+
+    private fun bindViews(data: Weather) {
+        with(data) {
+            val hourlyAdapter = HourlyAdapter(requireContext(), this.hourly.subList(0, 24))
+            val dailyAdapter = DailyAdapter(requireContext(), this.daily)
+            rvWeather.adapter = hourlyAdapter
+            rvNextWeather.adapter = dailyAdapter
+            rvWeather.layoutManager =
+                LinearLayoutManager(requireActivity(), LinearLayoutManager.HORIZONTAL, false)
+            rvNextWeather.layoutManager =
+                LinearLayoutManager(requireActivity(), LinearLayoutManager.HORIZONTAL, false)
+        }
+    }
+
+    private fun initSearchObserver(locationName: String) {
+        weatherInfoViewModel.searchLocationData(locationName)
+        weatherInfoViewModel.searchData.observe(viewLifecycleOwner) {
+            when (it.status) {
+                Status.SUCCESS -> {
+                    Toast.makeText(requireContext(), "Success", Toast.LENGTH_SHORT).show()
+                    bindViews(it.data?.body()!!)
+                }
+                Status.LOADING -> {
+                    Toast.makeText(requireContext(), "Loading...", Toast.LENGTH_SHORT).show()
+                }
+                Status.ERROR -> {
+                    Toast.makeText(requireContext(), "Error...", Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+    }
+
+    private fun bindViews(searchResults: SearchResults) {
+        with(searchResults) {
+            Toast.makeText(
+                this@WeatherInfoFragment.context,
+                this.dt.convertTimeStampToDay(),
+                Toast.LENGTH_SHORT
+            ).show()
+            tempText.text = this.main.temp.kelvinToCelsius().toString()
+            cityNameText.text = this.main.toString()
+            conditionText.text = this.weather[0].description
+            feelsLikeText.text =
+                "${getString(R.string.feels_like_30)} ${this.main.feelsLike.kelvinToCelsius()}"
+            humidityText.text = "${this.main.humidity} %"
+            windText.text = "${this.wind.speed}  km/h"
+            maxText.text = this.main.tempMax.kelvinToCelsius().toString()
+            minText.text = this.main.tempMin.kelvinToCelsius().toString()
+            val icon = this.weather[0].icon
+            val weatherIconUrl = "https://openweathermap.org/img/wn/$icon@2x.png"
+            Glide.with(this@WeatherInfoFragment)
+                .load(weatherIconUrl)
+                .override(150, 150)
+                .fitCenter()
+                .into(curConditionIcon)
+        }
     }
 
     private fun <T> LiveData<T>.observeOnce(lifecycleOwner: LifecycleOwner, observer: Observer<T>) {
@@ -128,4 +203,4 @@ class WeatherInfoFragment : Fragment() {
             }
         })
     }
-}*/
+}

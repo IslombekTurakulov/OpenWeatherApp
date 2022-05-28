@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.location.Address
 import android.location.Geocoder
+import android.os.Looper
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.google.android.gms.location.*
@@ -12,6 +13,8 @@ import kotlinx.coroutines.*
 import kotlinx.coroutines.Dispatchers.Default
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.Dispatchers.Main
+import timber.log.Timber
+import java.io.IOException
 import java.util.*
 
 
@@ -41,18 +44,27 @@ class LocationUtils constructor(@ApplicationContext private val context: Context
                 val location = it.result
                 location?.let {
                     CoroutineScope(locationScope).launch {
-                        val geocoder = Geocoder(context, Locale.getDefault())
-                        withContext(Default) {
-                            val address = geocoder.getFromLocation(
-                                location.latitude, location.longitude,
-                                1
-                            )
-                            _address.postValue(address)
-                            locationScope.cancel()
+                        try {
+                            val geocoder = Geocoder(context, Locale.getDefault())
+                            withContext(Default) {
+                                val address = geocoder.getFromLocation(
+                                    location.latitude, location.longitude,
+                                    1
+                                )
+                                _address.postValue(address)
+                                locationScope.cancel()
+                            }
+                        } catch (exception: IOException) {
+                            Timber.e(exception)
+                        } catch (exception: NullPointerException) {
+                            Timber.e(exception)
                         }
                     }
                 }
-                LocationServices.getFusedLocationProviderClient(context).requestLocationUpdates(locationRequest, locationCallback, null)
+                Looper.myLooper()?.let { it1 ->
+                    LocationServices.getFusedLocationProviderClient(context)
+                        .requestLocationUpdates(locationRequest, locationCallback, it1)
+                }
             }
         }
 
@@ -65,8 +77,10 @@ class LocationUtils constructor(@ApplicationContext private val context: Context
                 CoroutineScope(locationScope).launch {
                     val geocoder = Geocoder(context, Locale.getDefault())
                     withContext(IO) {
-                        val address = geocoder.getFromLocation(location.latitude,
-                            location.longitude, 1)
+                        val address = geocoder.getFromLocation(
+                            location.latitude,
+                            location.longitude, 1
+                        )
                         _address.postValue(address)
                         locationScope.cancel()
                     }

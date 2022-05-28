@@ -1,3 +1,4 @@
+/*
 package com.iuturakulov.openweatherapp.model.models
 
 import com.google.gson.annotations.SerializedName
@@ -14,9 +15,9 @@ data class HourlyDaily(
     @SerializedName("current")
     var currentWeather: Current,
     @SerializedName("hourly")
-    var hourly: List<HourlyForecast>,
+    var hourly: ArrayList<HourlyForecast>,
     @SerializedName("daily")
-    var daily: List<DailyForecast>
+    var daily: ArrayList<DailyForecast>
 )
 
 data class Current(
@@ -163,4 +164,4 @@ data class Weather(
     val description: String,
     @SerializedName("icon")
     val icon: String
-)
+)*/

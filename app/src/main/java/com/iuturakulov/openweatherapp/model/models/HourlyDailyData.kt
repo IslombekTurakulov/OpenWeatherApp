@@ -1,3 +1,4 @@
+/*
 package com.iuturakulov.openweatherapp.model.models
 
 
@@ -9,4 +10,4 @@ data class HourlyDailyData(
     var currentWeather: Current,
     var hourly: List<HourlyForecast>,
     var daily: List<DailyForecast>
-)
+)*/

@@ -1,13 +1,18 @@
-/*
 package com.iuturakulov.openweatherapp.viewModel.repositories
 
-import javax.inject.Inject
+import com.iuturakulov.openweatherapp.model.models.SearchResults
+import com.iuturakulov.openweatherapp.model.models.Weather
+import retrofit2.Response
 
-class WeatherRepository @Inject constructor(private val apiHelper: ApiHelper) {
+interface WeatherRepository {
+    suspend fun getWeatherData(
+        latitude: Double,
+        longitude: Double,
+        apiKey: String,
+    ): Response<Weather>
 
-    suspend fun getWeatherData(latitude: Double, longitude: Double, apiKey: String, unit: String) =
-        apiHelper.getWeatherData(latitude, longitude, apiKey, unit)
-
-    suspend fun getSearchLocationData(locationName: String, apiKey: String, unit: String)  =
-        apiHelper.searchWeatherLocationData(locationName, apiKey, unit)
-}*/
+    suspend fun getSearchLocationData(
+        locationName: String,
+        apiKey: String,
+    ): Response<SearchResults>
+}

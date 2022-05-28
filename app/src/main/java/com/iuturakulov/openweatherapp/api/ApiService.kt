@@ -1,6 +1,6 @@
 package com.iuturakulov.openweatherapp.api
 
-import com.iuturakulov.openweatherapp.model.models.HourlyDaily
+import com.iuturakulov.openweatherapp.model.models.SearchResults
 import com.iuturakulov.openweatherapp.model.models.Weather
 import retrofit2.Response
 import retrofit2.http.GET
@@ -13,6 +13,11 @@ interface ApiService {
         @Query("lat") latitude: Double,
         @Query("lon") longitude: Double,
         @Query("appid") apiKey: String,
-        @Query("exclude") exclude: String = "daily, hourly",
-    ): HourlyDaily
+    ) : Response<Weather>
+
+    @GET("weather")
+    suspend fun searchWeatherLocationData(
+        @Query("q") locationName: String,
+        @Query("appid") apiKey: String,
+    ) : Response<SearchResults>
 }
