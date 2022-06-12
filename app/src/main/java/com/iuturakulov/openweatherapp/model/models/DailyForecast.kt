@@ -1,7 +1,9 @@
 package com.iuturakulov.openweatherapp.model.models
 
 
+import android.location.Location
 import android.os.Parcelable
+import com.google.gson.annotations.SerializedName
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 import kotlinx.android.parcel.Parcelize
@@ -42,6 +44,10 @@ data class DailyForecast(
     @Json(name = "wind_speed")
     val windSpeed: Double
 ): Parcelable
+
+data class Place(val name: String, val location: Location, @SerializedName("formatted_address") val address: String)
+
+data class Location(val lng: String, val lat: String)
 
 @JsonClass(generateAdapter = true)
 @Parcelize
