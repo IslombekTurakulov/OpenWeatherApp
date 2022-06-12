@@ -4,7 +4,6 @@ import android.app.Activity
 import android.content.Context
 import android.content.IntentSender
 import android.location.LocationManager
-import android.util.Log
 import android.widget.Toast
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.common.api.ResolvableApiException

@@ -9,10 +9,11 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import com.iuturakulov.openweatherapp.R
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_main.*
 import timber.log.Timber
 
-
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
     private lateinit var navController: NavController
@@ -22,10 +23,6 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         navController = findNavController(R.id.nav_graph)
         setupSmoothBottomMenu()
-        /*     val animDrawable = main_menu_info.background as AnimationDrawable
-             animDrawable.setEnterFadeDuration(10)
-             animDrawable.setExitFadeDuration(10000)
-             animDrawable.start()*/
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

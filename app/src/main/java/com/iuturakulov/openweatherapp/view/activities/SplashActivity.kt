@@ -3,7 +3,6 @@ package com.iuturakulov.openweatherapp.view.activities
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import com.iuturakulov.openweatherapp.MyApp
 import com.iuturakulov.openweatherapp.R
 import dagger.hilt.android.AndroidEntryPoint
 
