@@ -77,10 +77,12 @@ class LocationUtils constructor(@ApplicationContext private val context: Context
                 CoroutineScope(locationScope).launch {
                     val geocoder = Geocoder(context, Locale.getDefault())
                     withContext(IO) {
-                        val address = geocoder.getFromLocation(
-                            location.latitude,
-                            location.longitude, 1
-                        )
+                        val address = location?.let { it1 ->
+                            geocoder.getFromLocation(
+                                it1.latitude,
+                                location.longitude, 1
+                            )
+                        }
                         _address.postValue(address)
                         locationScope.cancel()
                     }

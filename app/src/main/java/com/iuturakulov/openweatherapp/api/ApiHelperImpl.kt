@@ -8,7 +8,7 @@ class ApiHelperImpl @Inject constructor(private val apiService: ApiService): Api
     override suspend fun getWeatherData(
         latitude: Double,
         longitude: Double,
-        apiKey: String,
+        apiKey: String
     ) = apiService.getWeatherData(latitude, longitude, apiKey)
 
     override suspend fun searchWeatherLocationData(locationName: String, apiKey: String): Response<SearchResults> =

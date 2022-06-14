@@ -3,17 +3,16 @@ package com.iuturakulov.openweatherapp.viewModel.repositories
 import com.iuturakulov.openweatherapp.api.ApiHelper
 import javax.inject.Inject
 
-class WeatherRepositoryImpl @Inject constructor(private val apiHelper: ApiHelper) :
-    WeatherRepository {
+class WeatherRepositoryImpl @Inject constructor(private val apiHelper: ApiHelper) {
 
-    override suspend fun getWeatherData(
+    suspend fun getWeatherData(
         latitude: Double,
         longitude: Double,
-        apiKey: String,
+        apiKey: String
     ) = apiHelper.getWeatherData(latitude, longitude, apiKey)
 
-    override suspend fun getSearchLocationData(
+    suspend fun getSearchLocationData(
         locationName: String,
-        apiKey: String,
+        apiKey: String
     ) = apiHelper.searchWeatherLocationData(locationName, apiKey)
 }

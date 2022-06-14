@@ -22,10 +22,10 @@ class ApplicationModule {
     @Singleton
     @Provides
     fun providesBaseUrl() = BuildConfig.BASE_URL
-
+/*
     @Singleton
     @Provides
-    fun providesOldBaseUrl() = BuildConfig.OLD_BASE
+    fun providesOldBaseUrl() = BuildConfig.OLD_BASE*/
 
     @Singleton
     @Provides

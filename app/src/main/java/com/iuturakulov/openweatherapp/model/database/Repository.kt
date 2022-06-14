@@ -1,3 +1,4 @@
+/*
 package com.iuturakulov.openweatherapp.model.database
 
 import androidx.lifecycle.liveData
@@ -60,4 +61,4 @@ object Repository {
             emit(result)
         }
 
-}
+}*/

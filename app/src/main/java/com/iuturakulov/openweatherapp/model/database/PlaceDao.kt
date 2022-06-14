@@ -1,3 +1,4 @@
+/*
 package com.iuturakulov.openweatherapp.model.database
 
 import android.content.Context
@@ -24,4 +25,4 @@ object PlaceDao {
     private fun sharedPreferences() =
         App.context.getSharedPreferences("app_weather", Context.MODE_PRIVATE)
 
-}
+}*/

@@ -12,12 +12,12 @@ interface ApiService {
     suspend fun getWeatherData(
         @Query("lat") latitude: Double,
         @Query("lon") longitude: Double,
-        @Query("appid") apiKey: String,
+        @Query("appid") apiKey: String
     ) : Response<Weather>
 
     @GET("weather")
     suspend fun searchWeatherLocationData(
         @Query("q") locationName: String,
-        @Query("appid") apiKey: String,
+        @Query("appid") apiKey: String
     ) : Response<SearchResults>
 }
