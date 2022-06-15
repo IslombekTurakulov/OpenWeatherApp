@@ -19,7 +19,7 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/current_location"
-            style="@style/imageButtonStyle"
+            style="@style/Widget.Material3.Button.IconButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -179,7 +179,7 @@
                     <com.google.android.material.button.MaterialButton
                         android:layout_width="@dimen/_20ssp"
                         android:layout_height="@dimen/_20ssp"
-                        style="@style/imageButtonStyle"
+                        style="@style/Widget.Material3.Button.IconButton"
                         android:contentDescription="@string/wind_icon_image"
                         android:padding="@dimen/_3sdp"
                         android:enabled="false"
@@ -198,7 +198,7 @@
                 <com.google.android.material.button.MaterialButton
                     android:layout_width="@dimen/_20ssp"
                     android:layout_height="@dimen/_20ssp"
-                    style="@style/imageButtonStyle"
+                    style="@style/Widget.Material3.Button.IconButton"
                     android:contentDescription="@string/humidity_icon_image"
                     android:padding="@dimen/_3sdp"
                     android:enabled="false"
@@ -249,7 +249,7 @@
 
                         <com.google.android.material.button.MaterialButton
                             android:id="@+id/shareTodayWeatherForecast"
-                            style="@style/imageButtonStyle"
+                            style="@style/Widget.Material3.Button.IconButton"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             app:icon="@drawable/ic_baseline_share_24" />
@@ -291,7 +291,7 @@
 
                         <com.google.android.material.button.MaterialButton
                             android:id="@+id/shareNextWeatherForecast"
-                            style="@style/imageButtonStyle"
+                            style="@style/Widget.Material3.Button.IconButton"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             app:icon="@drawable/ic_baseline_share_24" />

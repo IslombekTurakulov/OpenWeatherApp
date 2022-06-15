@@ -19,8 +19,6 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.iuturakulov.openweatherapp.R
-import com.iuturakulov.openweatherapp.model.models.DailyForecast
-import com.iuturakulov.openweatherapp.model.models.HourlyForecast
 import com.iuturakulov.openweatherapp.model.models.SearchResults
 import com.iuturakulov.openweatherapp.model.models.Weather
 import com.iuturakulov.openweatherapp.utils.*
@@ -31,6 +29,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_weather_info.*
 import javax.inject.Inject
 
+@AndroidEntryPoint
 class WeatherInfoFragment : Fragment() {
 
     private val REQUEST_LOCATION_CODE = 1
@@ -55,8 +54,9 @@ class WeatherInfoFragment : Fragment() {
         GpsUtils(requireActivity()).turnOnGps(object : GpsUtils.OnGpsListener {
             override fun gpsStatus(isGPSEnabled: Boolean) {
                 isGps = isGPSEnabled
-                if (isGps)
-                    getLocation()
+                when {
+                    isGps -> getLocation()
+                }
             }
         })
     }
@@ -151,7 +151,7 @@ class WeatherInfoFragment : Fragment() {
             rvWeather.layoutManager =
                 LinearLayoutManager(requireActivity(), LinearLayoutManager.HORIZONTAL, false)
             rvNextWeather.layoutManager =
-                LinearLayoutManager(requireActivity(), LinearLayoutManager.HORIZONTAL, false)
+                LinearLayoutManager(requireActivity(), LinearLayoutManager.VERTICAL, false)
         }
     }
 
@@ -180,17 +180,17 @@ class WeatherInfoFragment : Fragment() {
                 this.dt.convertTimeStampToDay(),
                 Toast.LENGTH_SHORT
             ).show()
-            tempText.text = this.main.temp.kelvinToCelsius().toString()
-            cityNameText.text = this.main.toString()
-            conditionText.text = this.weather[0].description
+            tempText.text = "${this.main.temp.kelvinToCelsius().toString()}°"
+            cityNameText.text = "${this.name.toLowerCase()}, ${this.sys.country}"
+            conditionText.text = this.weather[0].main.toLowerCase()
             feelsLikeText.text =
                 "${getString(R.string.feels_like_30)} ${this.main.feelsLike.kelvinToCelsius()}"
             humidityText.text = "${this.main.humidity} %"
-            windText.text = "${this.wind.speed}  km/h"
-            maxText.text = this.main.tempMax.kelvinToCelsius().toString()
-            minText.text = this.main.tempMin.kelvinToCelsius().toString()
+            windText.text = "${this.wind.speed} km/h"
+            maxText.text = "${this.main.tempMax.kelvinToCelsius()}°"
+            minText.text = "${this.main.tempMin.kelvinToCelsius()}°"
             val icon = this.weather[0].icon
-            val weatherIconUrl = "https://openweathermap.org/img/wn/$icon@2x.png"
+            val weatherIconUrl = "https://openweathermap.org/img/wn/$icon@4x.png"
             Glide.with(this@WeatherInfoFragment)
                 .load(weatherIconUrl)
                 .override(150, 150)

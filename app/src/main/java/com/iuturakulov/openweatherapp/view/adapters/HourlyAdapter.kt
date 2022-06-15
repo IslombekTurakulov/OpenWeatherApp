@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.annotation.GlideModule
 import com.iuturakulov.openweatherapp.R
 import com.iuturakulov.openweatherapp.model.models.HourlyForecast
 import com.iuturakulov.openweatherapp.utils.kelvinToCelsius
@@ -13,6 +14,7 @@ import com.iuturakulov.openweatherapp.utils.unixTimestampToTimeString
 import kotlinx.android.synthetic.main.weather_item.view.*
 import timber.log.Timber
 
+@GlideModule
 class HourlyAdapter(
     val context: Context,
     private val hourlyForecast: List<HourlyForecast>
@@ -42,10 +44,10 @@ class HourlyAdapter(
         fun bind(hourlyForecast: HourlyForecast) {
             with(hourlyForecast) {
                 itemView.cardTime.text = this.dt.unixTimestampToTimeString()
-                itemView.cardWind.text = this.windSpeed.toString()
-                itemView.cardTemp.text = this.temp.kelvinToCelsius().toString()
+                itemView.cardWind.text = "${this.windSpeed} km/h"
+                itemView.cardTemp.text = "${this.temp.kelvinToCelsius()}°"
                 val icon = this.weather[0].icon
-                val weatherIconUrl = "https://openweathermap.org/img/wn/$icon@2x.png"
+                val weatherIconUrl = "https://openweathermap.org/img/wn/$icon@4x.png"
                 Glide.with(context)
                     .load(weatherIconUrl)
                     .override(150, 150)

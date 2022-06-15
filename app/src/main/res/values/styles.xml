@@ -1,19 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="AppTheme" parent="Theme.MaterialComponents.Light.DarkActionBar">
+    <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
         <item name="colorPrimary">@color/hse_gray</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
-        <item name="android:windowBackground">@color/divider</item>
+        <item name="android:windowBackground">#B6B6B6</item>
         <item name="textColor">@color/hse_gray</item>
     </style>
 
-    <style name="WeatherAppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="WeatherAppTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
         <item name="colorPrimary">@color/hse_gray</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:textColor">@color/hse_gray</item>
-        <item name="imageButtonStyle">@style/Widget.Material3.Button.Icon</item>
     </style>
 
     <style name="MyAppTheme.TextInputLayout" parent="@android:style/TextAppearance">
@@ -22,19 +21,6 @@
 
     <style name="TextViewDark" parent="Widget.AppCompat.TextView">
         <item name="android:textColor">@color/hse_gray</item>
-    </style>
-
-    <style name="imageButtonStyle" parent="Widget.Material3.Button.TextButton">
-        <item name="android:minWidth">@dimen/m3_btn_icon_only_min_width</item>
-        <item name="android:paddingLeft">@dimen/m3_btn_icon_only_default_padding</item>
-        <item name="android:paddingRight">@dimen/m3_btn_icon_only_default_padding</item>
-        <item name="android:paddingTop">@dimen/m3_btn_icon_only_default_padding</item>
-        <item name="android:paddingBottom">@dimen/m3_btn_icon_only_default_padding</item>
-        <item name="android:insetLeft">@dimen/m3_btn_inset</item>
-        <item name="android:insetRight">@dimen/m3_btn_inset</item>
-        <item name="iconSize">@dimen/m3_btn_icon_only_default_size</item>
-        <item name="iconPadding">@dimen/m3_btn_icon_only_icon_padding</item>
-        <item name="iconTint">@color/hse_gray</item>
     </style>
 
     <style name="style_for_search_bar" parent="android:Widget.EditText">

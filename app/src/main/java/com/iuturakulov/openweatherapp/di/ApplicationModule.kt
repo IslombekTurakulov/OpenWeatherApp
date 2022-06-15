@@ -21,7 +21,7 @@ class ApplicationModule {
 
     @Singleton
     @Provides
-    fun providesBaseUrl() = BuildConfig.BASE_URL
+    fun providesBaseUrl() = BuildConfig.OLD_BASE
 /*
     @Singleton
     @Provides

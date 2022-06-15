@@ -6,7 +6,20 @@
     android:layout_height="match_parent"
     tools:context=".view.activities.MainActivity">
 
-    <fragment
+
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/nav_host"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:name="androidx.navigation.fragment.NavHostFragment"
+        app:defaultNavHost="true"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:navGraph="@navigation/navigation_main"/>
+
+   <!-- <fragment
         android:id="@+id/main_fragment"
         android:name="androidx.navigation.fragment.NavHostFragment"
         android:layout_width="match_parent"
@@ -33,6 +46,6 @@
         app:menu="@menu/main_menu"
         app:sideMargins="@dimen/_10sdp"
         app:textColor="@color/white"
-        app:textSize="@dimen/_14ssp" />
+        app:textSize="@dimen/_14ssp" />-->
 
 </androidx.constraintlayout.widget.ConstraintLayout>
