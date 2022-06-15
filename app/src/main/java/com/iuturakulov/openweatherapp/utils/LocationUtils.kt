@@ -16,12 +16,13 @@ import kotlinx.coroutines.Dispatchers.Main
 import timber.log.Timber
 import java.io.IOException
 import java.util.*
+import javax.inject.Inject
 
 
 /**
  * @see https://stackoverflow.com/a/59663897
  */
-class LocationUtils constructor(@ApplicationContext private val context: Context) {
+class LocationUtils @Inject constructor(@ApplicationContext private val context: Context) {
     private val fusedLocationProvider: FusedLocationProviderClient =
         LocationServices.getFusedLocationProviderClient(context)
     val locationScope = Main + Job()

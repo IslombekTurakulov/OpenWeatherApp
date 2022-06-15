@@ -27,14 +27,18 @@ import com.iuturakulov.openweatherapp.utils.*
 import com.iuturakulov.openweatherapp.view.adapters.DailyAdapter
 import com.iuturakulov.openweatherapp.view.adapters.HourlyAdapter
 import com.iuturakulov.openweatherapp.viewModel.viewModels.WeatherInfoViewModel
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_weather_info.*
-
+import javax.inject.Inject
 
 class WeatherInfoFragment : Fragment() {
 
     private val REQUEST_LOCATION_CODE = 1
     private val weatherInfoViewModel: WeatherInfoViewModel by viewModels()
-    private lateinit var locUtils: LocationUtils
+
+    @Inject
+    lateinit var locUtils: LocationUtils
+
     private var isGps = false
     private lateinit var location: String
     private lateinit var city: String

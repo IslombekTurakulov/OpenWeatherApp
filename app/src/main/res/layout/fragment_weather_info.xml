@@ -2,10 +2,9 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
     android:id="@+id/activity_main_layout"
-    android:layout_height="match_parent"
-    android:background="@color/hse_gray">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -27,17 +26,19 @@
                 android:gravity="center"
                 android:orientation="horizontal">
 
-                <ImageButton
+                <com.google.android.material.button.MaterialButton
                     android:id="@+id/current_location"
+                    style="@style/imageButtonStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="@dimen/_10sdp"
-                    style="@style/Widget.Material3.Button.Icon"
                     android:layout_marginStart="@dimen/_16sdp"
                     android:contentDescription="@string/get_my_current_location"
                     android:enabled="false"
-                    android:src="@drawable/my_location"
-                    app:cornerRadius="20dp"
+                    android:layout_gravity="center"
+                    app:cornerRadius="@dimen/_15sdp"
+                    app:icon="@drawable/my_location"
+                    app:iconSize="@dimen/_24sdp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -50,9 +51,7 @@
                     android:background="@android:color/transparent"
                     android:hint="@string/search_city_weather"
                     android:imeOptions="actionDone"
-                    android:inputType="text"
-                    android:textColor="@color/white"
-                    android:textColorHint="@color/white" />
+                    android:inputType="text" />
             </LinearLayout>
 
             <LinearLayout
@@ -68,16 +67,15 @@
                     android:layout_width="@dimen/_30sdp"
                     android:layout_height="@dimen/_30sdp"
                     android:contentDescription="@string/city_info"
-                    android:src="@drawable/ic_cloudy"
-                    app:tint="@color/white" />
+                    android:src="@drawable/ic_cloudy" />
 
                 <TextView
                     android:id="@+id/cityNameText"
+                    style="@style/TextViewDark"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingHorizontal="@dimen/_5sdp"
                     android:text="Moscow"
-                    android:textColor="@color/white"
                     android:textSize="@dimen/_22ssp" />
             </LinearLayout>
 
@@ -87,16 +85,17 @@
 
                 <TextView
                     android:id="@+id/tempText"
+                    style="@style/TextViewDark"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
                     android:text="35"
                     android:textAlignment="center"
-                    android:textColor="@color/white"
                     android:textSize="@dimen/_80ssp" />
 
                 <TextView
                     android:id="@+id/dot"
+                    style="@style/TextViewDark"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/_20sdp"
@@ -104,7 +103,6 @@
                     android:layout_toEndOf="@+id/tempText"
                     android:text="@string/info_temperature"
                     android:textAlignment="center"
-                    android:textColor="@color/white"
                     android:textSize="@dimen/_50ssp" />
             </RelativeLayout>
 
@@ -117,19 +115,19 @@
 
             <TextView
                 android:id="@+id/conditionText"
+                style="@style/TextViewDark"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/weather_status"
-                android:textColor="@color/white"
                 android:textSize="@dimen/_20ssp" />
 
             <TextView
                 android:id="@+id/feelsLikeText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                style="@style/TextViewDark"
                 android:padding="3dp"
-                android:text="@string/feels_like_30"
-                android:textColor="#D3D3D3" />
+                android:text="@string/feels_like_30" />
 
             <LinearLayout
                 android:id="@+id/minMaxText"
@@ -142,15 +140,15 @@
                     android:id="@+id/maxText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="max "
-                    android:textColor="@color/white" />
+                    style="@style/TextViewDark"
+                    android:text="max " />
 
                 <TextView
                     android:id="@+id/minText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="/ min"
-                    android:textColor="#D3D3D3" />
+                    style="@style/TextViewDark"
+                    android:text="/ min" />
             </LinearLayout>
 
             <LinearLayout
@@ -168,53 +166,75 @@
                     android:orientation="horizontal"
                     android:paddingHorizontal="@dimen/_10sdp">
 
-                    <ImageView
+                    <com.google.android.material.button.MaterialButton
                         android:layout_width="@dimen/_20ssp"
                         android:layout_height="@dimen/_20ssp"
+                        style="@style/imageButtonStyle"
                         android:contentDescription="@string/wind_icon_image"
                         android:padding="@dimen/_3sdp"
-                        android:src="@drawable/ic_wind"
-                        app:tint="@color/white" />
+                        android:enabled="false"
+                        app:icon="@drawable/ic_wind" />
 
                     <TextView
                         android:id="@+id/windText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        style="@style/TextViewDark"
                         android:paddingHorizontal="@dimen/_7sdp"
-                        android:text="15 km/h"
-                        android:textColor="@color/white" />
+                        android:text="15 km/h" />
 
                 </LinearLayout>
 
-                <ImageView
+                <com.google.android.material.button.MaterialButton
                     android:layout_width="@dimen/_20ssp"
                     android:layout_height="@dimen/_20ssp"
+                    style="@style/imageButtonStyle"
                     android:contentDescription="@string/humidity_icon_image"
                     android:padding="@dimen/_3sdp"
-                    android:src="@drawable/ic_humidity"
-                    app:tint="@color/white" />
+                    android:enabled="false"
+                    app:icon="@drawable/ic_humidity" />
 
                 <TextView
                     android:id="@+id/humidityText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingHorizontal="3dp"
-                    android:text="22%"
-                    android:textColor="@color/white" />
+                    style="@style/TextViewDark"
+                    android:text="22%" />
 
             </LinearLayout>
 
             <!--Today header-->
-            <TextView
-                android:id="@+id/heading"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_20sdp"
                 android:layout_marginTop="@dimen/_10sdp"
-                android:layout_marginEnd="@dimen/_10sdp"
-                android:text="@string/today"
-                android:textColor="@color/white"
-                android:textSize="@dimen/_20ssp" />
+                android:gravity="center"
+                android:layout_marginEnd="@dimen/_10sdp">
+
+                <TextView
+                    android:id="@+id/heading"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/today"
+                    style="@style/TextViewDark"
+                    android:textAlignment="center"
+                    android:textSize="@dimen/_20ssp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="end">
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/shareTodayWeatherForecast"
+                        style="@style/imageButtonStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:icon="@drawable/ic_baseline_share_24" />
+                </LinearLayout>
+            </LinearLayout>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvWeather"
@@ -227,16 +247,36 @@
                 tools:listitem="@layout/weather_item" />
 
             <!-- Next header -->
-            <TextView
-                android:id="@+id/nextHeading"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_20sdp"
                 android:layout_marginTop="@dimen/_10sdp"
-                android:layout_marginEnd="@dimen/_10sdp"
-                android:text="@string/next_forecast"
-                android:textColor="@color/white"
-                android:textSize="@dimen/_20ssp" />
+                android:gravity="center"
+                android:layout_marginEnd="@dimen/_10sdp">
+
+                <TextView
+                    android:id="@+id/nextForecast"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/next_forecast"
+                    android:textAlignment="center"
+                    style="@style/TextViewDark"
+                    android:textSize="@dimen/_20ssp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="end">
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/shareNextWeatherForecast"
+                        style="@style/imageButtonStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:icon="@drawable/ic_baseline_share_24" />
+                </LinearLayout>
+            </LinearLayout>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvNextWeather"
@@ -246,6 +286,11 @@
                 android:layout_marginBottom="@dimen/_60sdp"
                 android:overScrollMode="never"
                 tools:listitem="@layout/next_weather_item" />
+
+            <com.github.mikephil.charting.charts.LineChart
+                android:id="@+id/nextDayTemperatureLineChart"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_200sdp" />
         </LinearLayout>
     </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

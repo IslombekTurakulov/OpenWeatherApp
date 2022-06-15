@@ -28,7 +28,8 @@
         <activity
             android:name=".view.activities.MainActivity"
             android:exported="false"
-            android:windowSoftInputMode="adjustPan" />
+            android:windowSoftInputMode="adjustPan"
+            android:theme="@style/WeatherAppTheme"/>
 
     </application>
 
