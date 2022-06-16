@@ -53,12 +53,19 @@
                     android:text="max "
                     android:textColor="@color/white"
                     android:textSize="18sp" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="/"
+                    android:padding="@dimen/_2sdp"
+                    android:textColor="@color/white"
+                    android:textSize="18sp" />
 
                 <TextView
                     android:id="@+id/nextMinText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="/ min"
+                    android:text="min"
                     android:textColor="#D3D3D3"
                     android:textSize="18sp" />
             </LinearLayout>

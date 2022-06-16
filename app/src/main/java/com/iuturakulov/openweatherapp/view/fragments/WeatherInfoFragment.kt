@@ -106,7 +106,7 @@ class WeatherInfoFragment : Fragment() {
         val local = it[0].locality
         val country = it[0].countryName
         location = "$local, $country"
-        cityNameText.text = "$local $country"
+        cityNameText.text = "$local\n$country"
         initObserver(location, it[0].latitude, it[0].longitude)
     }
 
@@ -126,20 +126,6 @@ class WeatherInfoFragment : Fragment() {
                 }
             }
         }
-        weatherInfoViewModel.searchLocationData(location)
-        weatherInfoViewModel.searchData.observe(viewLifecycleOwner) {
-            when (it.status) {
-                Status.SUCCESS -> {
-
-                }
-                Status.LOADING -> {
-
-                }
-                Status.ERROR -> {
-
-                }
-            }
-        }
     }
 
     private fun bindViews(data: Weather) {
@@ -152,6 +138,21 @@ class WeatherInfoFragment : Fragment() {
                 LinearLayoutManager(requireActivity(), LinearLayoutManager.HORIZONTAL, false)
             rvNextWeather.layoutManager =
                 LinearLayoutManager(requireActivity(), LinearLayoutManager.VERTICAL, false)
+            tempText.text = "${data.current.temp.kelvinToCelsius()}"
+            conditionText.text = this.current.weather[0].main
+            feelsLikeText.text =
+                "${getString(R.string.feels_like_30)} ${this.current.feelsLike.kelvinToCelsius()}"
+            humidityText.text = "${this.current.humidity} %"
+            windText.text = "${this.current.windSpeed} km/h"
+            maxText.text = "max ${this.daily[0].temp.max.kelvinToCelsius()}°/"
+            minText.text = "min ${this.daily[0].temp.min.kelvinToCelsius()}°"
+            val icon = this.current.weather[0].icon
+            val weatherIconUrl = "https://openweathermap.org/img/wn/$icon@4x.png"
+            Glide.with(this@WeatherInfoFragment)
+                .load(weatherIconUrl)
+                .override(150, 150)
+                .fitCenter()
+                .into(curConditionIcon)
         }
     }
 
@@ -180,15 +181,15 @@ class WeatherInfoFragment : Fragment() {
                 this.dt.convertTimeStampToDay(),
                 Toast.LENGTH_SHORT
             ).show()
-            tempText.text = "${this.main.temp.kelvinToCelsius().toString()}°"
-            cityNameText.text = "${this.name.toLowerCase()}, ${this.sys.country}"
-            conditionText.text = this.weather[0].main.toLowerCase()
+            tempText.text = this.main.temp.kelvinToCelsius().toString()
+            cityNameText.text = "${this.name}, ${this.sys.country}"
+            conditionText.text = this.weather[0].main
             feelsLikeText.text =
                 "${getString(R.string.feels_like_30)} ${this.main.feelsLike.kelvinToCelsius()}"
             humidityText.text = "${this.main.humidity} %"
             windText.text = "${this.wind.speed} km/h"
-            maxText.text = "${this.main.tempMax.kelvinToCelsius()}°"
-            minText.text = "${this.main.tempMin.kelvinToCelsius()}°"
+            maxText.text = "max ${this.main.tempMax.kelvinToCelsius()}°/"
+            minText.text = "min ${this.main.tempMin.kelvinToCelsius()}°"
             val icon = this.weather[0].icon
             val weatherIconUrl = "https://openweathermap.org/img/wn/$icon@4x.png"
             Glide.with(this@WeatherInfoFragment)

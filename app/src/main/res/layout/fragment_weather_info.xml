@@ -74,8 +74,8 @@
                     style="@style/TextViewDark"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:paddingHorizontal="@dimen/_5sdp"
                     android:maxLines="2"
+                    android:padding="@dimen/_5sdp"
                     android:text="Moscow"
                     android:textSize="@dimen/_22ssp" />
             </LinearLayout>
@@ -124,9 +124,9 @@
 
             <TextView
                 android:id="@+id/feelsLikeText"
+                style="@style/TextViewDark"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                style="@style/TextViewDark"
                 android:padding="3dp"
                 android:text="@string/feels_like_30" />
 
@@ -158,14 +158,14 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_10sdp"
                 android:gravity="center"
+                android:layout_gravity="center_horizontal"
                 android:orientation="horizontal">
 
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:gravity="center"
-                    android:orientation="horizontal"
-                    android:paddingHorizontal="@dimen/_10sdp">
+                    android:orientation="horizontal">
 
                     <com.google.android.material.button.MaterialButton
                         android:layout_width="@dimen/_20ssp"
