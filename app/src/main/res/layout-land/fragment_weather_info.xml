@@ -84,6 +84,7 @@
                     style="@style/TextViewDark"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:maxLines="2"
                     android:paddingHorizontal="@dimen/_5sdp"
                     android:text="Moscow"
                     android:textSize="@dimen/_22ssp" />

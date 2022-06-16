@@ -27,6 +27,7 @@ import com.iuturakulov.openweatherapp.view.adapters.HourlyAdapter
 import com.iuturakulov.openweatherapp.viewModel.viewModels.WeatherInfoViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_weather_info.*
+import timber.log.Timber
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -106,7 +107,7 @@ class WeatherInfoFragment : Fragment() {
         val local = it[0].locality
         val country = it[0].countryName
         location = "$local, $country"
-        cityNameText.text = "$local\n$country"
+        cityNameText.text = local
         initObserver(location, it[0].latitude, it[0].longitude)
     }
 
@@ -159,28 +160,27 @@ class WeatherInfoFragment : Fragment() {
     private fun initSearchObserver(locationName: String) {
         weatherInfoViewModel.searchLocationData(locationName)
         weatherInfoViewModel.searchData.observe(viewLifecycleOwner) {
-            when (it.status) {
-                Status.SUCCESS -> {
-                    Toast.makeText(requireContext(), "Success", Toast.LENGTH_SHORT).show()
-                    bindViews(it.data?.body()!!)
+            try {
+                when (it.status) {
+                    Status.SUCCESS -> {
+                        Toast.makeText(requireContext(), "Success", Toast.LENGTH_SHORT).show()
+                        bindViews(it.data?.body()!!)
+                    }
+                    Status.LOADING -> {
+                        Toast.makeText(requireContext(), "Loading...", Toast.LENGTH_SHORT).show()
+                    }
+                    Status.ERROR -> {
+                        Toast.makeText(requireContext(), "Error...", Toast.LENGTH_SHORT).show()
+                    }
                 }
-                Status.LOADING -> {
-                    Toast.makeText(requireContext(), "Loading...", Toast.LENGTH_SHORT).show()
-                }
-                Status.ERROR -> {
-                    Toast.makeText(requireContext(), "Error...", Toast.LENGTH_SHORT).show()
-                }
+            } catch (e: NullPointerException) {
+                Timber.e(e)
             }
         }
     }
 
     private fun bindViews(searchResults: SearchResults) {
         with(searchResults) {
-            Toast.makeText(
-                this@WeatherInfoFragment.context,
-                this.dt.convertTimeStampToDay(),
-                Toast.LENGTH_SHORT
-            ).show()
             tempText.text = this.main.temp.kelvinToCelsius().toString()
             cityNameText.text = "${this.name}, ${this.sys.country}"
             conditionText.text = this.weather[0].main
