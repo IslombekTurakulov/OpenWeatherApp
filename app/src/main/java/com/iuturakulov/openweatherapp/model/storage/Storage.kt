@@ -1,4 +1,4 @@
-package com.iuturakulov.openweatherapp.storage
+package com.iuturakulov.openweatherapp.model.storage
 
 interface Storage {
     fun saveData(key: String, value: String)
