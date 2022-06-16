@@ -19,7 +19,7 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
-  /*  @Inject
+  /*
     private lateinit var navController: NavController*/
 
     override fun onCreate(savedInstanceState: Bundle?) {

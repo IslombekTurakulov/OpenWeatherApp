@@ -16,4 +16,6 @@
     <string name="settings_menu_text">Настройки</string>
     <string name="dark_theme">Тёмная тема</string>
     <string name="language_settings">Язык</string>
+    <string name="weather_condition">состояние погоды -</string>
+    <string name="weather_country">Местоположение:</string>
 </resources>

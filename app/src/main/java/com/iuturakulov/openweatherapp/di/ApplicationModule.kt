@@ -29,23 +29,6 @@ class ApplicationModule {
 
     @Singleton
     @Provides
-    fun providesOkHttpClient() = if (BuildConfig.DEBUG) {
-        val loggingInterceptor = HttpLoggingInterceptor(object : HttpLoggingInterceptor.Logger {
-            override fun log(message: String) {
-                Timber.e(ApplicationModule::class.java.name, message)
-            }
-        })
-        loggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
-        OkHttpClient.Builder()
-            .addInterceptor(loggingInterceptor)
-            .build()
-    } else {
-        OkHttpClient.Builder()
-            .build()
-    }
-
-    @Singleton
-    @Provides
     fun providesRetrofit(baseUrl: String, okHttpClient: OkHttpClient): Retrofit =
         Retrofit.Builder()
             .baseUrl(baseUrl)
@@ -60,4 +43,21 @@ class ApplicationModule {
     @Singleton
     @Provides
     fun provideApiHelper(apiHelper: ApiHelperImpl): ApiHelper = apiHelper
+
+    @Singleton
+    @Provides
+    fun providesOkHttpClient() = if (BuildConfig.DEBUG) {
+        val loggingInterceptor = HttpLoggingInterceptor(object : HttpLoggingInterceptor.Logger {
+            override fun log(message: String) {
+                Timber.e(ApplicationModule::class.java.name, message)
+            }
+        })
+        loggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
+        OkHttpClient.Builder()
+            .addInterceptor(loggingInterceptor)
+            .build()
+    } else {
+        OkHttpClient.Builder()
+            .build()
+    }
 }

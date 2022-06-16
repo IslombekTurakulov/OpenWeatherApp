@@ -18,4 +18,6 @@
     <string name="settings_menu_text">Settings</string>
     <string name="dark_theme">Dark theme</string>
     <string name="language_settings">Language</string>
+    <string name="weather_condition">condition is</string>
+    <string name="weather_country">Location:</string>
 </resources>

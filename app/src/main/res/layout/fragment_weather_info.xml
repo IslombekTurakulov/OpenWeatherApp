@@ -76,7 +76,7 @@
                     android:layout_height="wrap_content"
                     android:maxLines="2"
                     android:padding="@dimen/_5sdp"
-                    android:text="Moscow"
+                    android:text="@string/next_forecast"
                     android:textSize="@dimen/_22ssp" />
             </LinearLayout>
 
@@ -173,8 +173,7 @@
                         style="@style/Widget.Material3.Button.IconButton"
                         android:contentDescription="@string/wind_icon_image"
                         android:padding="@dimen/_3sdp"
-                        android:enabled="false"
-                        app:icon="@drawable/ic_wind" />
+                        app:icon="@drawable/ic_baseline_air_24" />
 
                     <TextView
                         android:id="@+id/windText"
@@ -182,7 +181,7 @@
                         android:layout_height="wrap_content"
                         style="@style/TextViewDark"
                         android:paddingHorizontal="@dimen/_7sdp"
-                        android:text="15 km/h" />
+                        android:text="0 km/h" />
 
                 </LinearLayout>
 
@@ -192,8 +191,7 @@
                     style="@style/Widget.Material3.Button.IconButton"
                     android:contentDescription="@string/humidity_icon_image"
                     android:padding="@dimen/_3sdp"
-                    android:enabled="false"
-                    app:icon="@drawable/ic_humidity" />
+                    app:icon="@drawable/ic_baseline_grain_24" />
 
                 <TextView
                     android:id="@+id/humidityText"
@@ -201,7 +199,7 @@
                     android:layout_height="wrap_content"
                     android:paddingHorizontal="3dp"
                     style="@style/TextViewDark"
-                    android:text="22%" />
+                    android:text="0%" />
 
             </LinearLayout>
 
@@ -238,7 +236,7 @@
             </LinearLayout>
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rvWeather"
+                android:id="@+id/weatherConditionRecyclerView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_10sdp"

@@ -1,7 +1,9 @@
 package com.iuturakulov.openweatherapp.view.fragments
 
 import android.Manifest
+import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Color
 import android.location.Address
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -18,6 +20,15 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
+import com.github.mikephil.charting.animation.Easing
+import com.github.mikephil.charting.components.AxisBase
+import com.github.mikephil.charting.components.XAxis
+import com.github.mikephil.charting.components.YAxis
+import com.github.mikephil.charting.data.Entry
+import com.github.mikephil.charting.data.LineData
+import com.github.mikephil.charting.data.LineDataSet
+import com.github.mikephil.charting.formatter.ValueFormatter
+import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
 import com.iuturakulov.openweatherapp.R
 import com.iuturakulov.openweatherapp.model.models.SearchResults
 import com.iuturakulov.openweatherapp.model.models.Weather
@@ -30,11 +41,13 @@ import kotlinx.android.synthetic.main.fragment_weather_info.*
 import timber.log.Timber
 import javax.inject.Inject
 
+
 @AndroidEntryPoint
 class WeatherInfoFragment : Fragment() {
 
     private val REQUEST_LOCATION_CODE = 1
     private val weatherInfoViewModel: WeatherInfoViewModel by viewModels()
+    private var currentChosenWeather: Weather? = null
 
     @Inject
     lateinit var locUtils: LocationUtils
@@ -68,15 +81,64 @@ class WeatherInfoFragment : Fragment() {
             TextView.OnEditorActionListener { v, actionId, event ->
                 if ((actionId == EditorInfo.IME_ACTION_SEARCH || actionId == EditorInfo.IME_ACTION_DONE) && (event == null || !event.isShiftPressed)) {
                     city = searchBar.text.toString()
-                    initSearchObserver(city)
-                    return@OnEditorActionListener true
+                    if (city.isNotEmpty()) {
+                        initSearchObserver(city)
+                        return@OnEditorActionListener true
+                    } else {
+                        return@OnEditorActionListener false
+                    }
                 }
                 false
             })
-
+        shareTodayWeatherForecast.setOnClickListener {
+            val sharingIntent = Intent(Intent.ACTION_SEND)
+            sharingIntent.type = "text/plain"
+            val shareSub = "Today Weather"
+            sharingIntent.putExtra(Intent.EXTRA_SUBJECT, shareSub)
+            sharingIntent.putExtra(Intent.EXTRA_TEXT, shareTodayWeather())
+            startActivity(Intent.createChooser(sharingIntent, "Share using"))
+        }
+        shareNextWeatherForecast.setOnClickListener {
+            val sharingIntent = Intent(Intent.ACTION_SEND)
+            sharingIntent.type = "text/plain"
+            val shareSub = "Next Weather"
+            sharingIntent.putExtra(Intent.EXTRA_SUBJECT, shareSub)
+            sharingIntent.putExtra(Intent.EXTRA_TEXT, shareNextWeather())
+            startActivity(Intent.createChooser(sharingIntent, "Share using"))
+        }
         current_location.setOnClickListener {
             getLocation()
         }
+    }
+
+    private fun shareTodayWeather(): String {
+        val builder: StringBuilder = java.lang.StringBuilder()
+        builder.append("${getString(R.string.weather_country)} ${cityNameText.text}\n")
+        for (hourlyWeather in currentChosenWeather!!.hourly) {
+            builder.append(
+                "\n${hourlyWeather.dt.convertTimeStampToHour()}: ${getString(R.string.weather_condition)} ${hourlyWeather.weather[0].main}, ${hourlyWeather.temp.kelvinToCelsius()}°, ${
+                    getString(
+                        R.string.feels_like_30
+                    )
+                } ${hourlyWeather.feelsLike.kelvinToCelsius()} °"
+            )
+        }
+        return builder.toString()
+    }
+
+    private fun shareNextWeather(): String {
+        val builder: StringBuilder = java.lang.StringBuilder()
+        builder.append("${getString(R.string.weather_country)} ${cityNameText.text}\n")
+        for (hourlyWeather in currentChosenWeather!!.daily) {
+            builder.append(
+                "\n${hourlyWeather.dt.convertTimeStampToDay()}: ${getString(R.string.weather_condition)} ${hourlyWeather.weather[0].main}, ${hourlyWeather.temp.day.kelvinToCelsius()}°, ${
+                    getString(
+                        R.string.feels_like_30
+                    )
+                } ${hourlyWeather.feelsLike.day.kelvinToCelsius()} °"
+            )
+        }
+        return builder.toString()
     }
 
     private fun getLocation() {
@@ -118,6 +180,7 @@ class WeatherInfoFragment : Fragment() {
                 Status.SUCCESS -> {
                     Toast.makeText(requireContext(), "Success", Toast.LENGTH_SHORT).show()
                     bindViews(it.data?.body()!!)
+                    currentChosenWeather = it.data.body()!!
                 }
                 Status.LOADING -> {
                     Toast.makeText(requireContext(), "Loading...", Toast.LENGTH_SHORT).show()
@@ -133,16 +196,16 @@ class WeatherInfoFragment : Fragment() {
         with(data) {
             val hourlyAdapter = HourlyAdapter(requireContext(), this.hourly.subList(0, 24))
             val dailyAdapter = DailyAdapter(requireContext(), this.daily)
-            rvWeather.adapter = hourlyAdapter
+            weatherConditionRecyclerView.adapter = hourlyAdapter
             rvNextWeather.adapter = dailyAdapter
-            rvWeather.layoutManager =
+            weatherConditionRecyclerView.layoutManager =
                 LinearLayoutManager(requireActivity(), LinearLayoutManager.HORIZONTAL, false)
             rvNextWeather.layoutManager =
                 LinearLayoutManager(requireActivity(), LinearLayoutManager.VERTICAL, false)
             tempText.text = "${data.current.temp.kelvinToCelsius()}"
             conditionText.text = this.current.weather[0].main
             feelsLikeText.text =
-                "${getString(R.string.feels_like_30)} ${this.current.feelsLike.kelvinToCelsius()}"
+                "${getString(R.string.feels_like_30)} ${this.current.feelsLike.kelvinToCelsius()}°"
             humidityText.text = "${this.current.humidity} %"
             windText.text = "${this.current.windSpeed} km/h"
             maxText.text = "max ${this.daily[0].temp.max.kelvinToCelsius()}°/"
@@ -154,7 +217,98 @@ class WeatherInfoFragment : Fragment() {
                 .override(150, 150)
                 .fitCenter()
                 .into(curConditionIcon)
+            initializeLineChartTemperature()
         }
+    }
+
+    private fun Weather.initializeLineChartTemperature() {
+        val prevData = nextDayTemperatureLineChart.data
+        if (prevData != null) {
+            nextDayTemperatureLineChart.clear()
+            nextDayTemperatureLineChart.zoom(0f, 0f, 0f, 0f)
+        }
+        val entries = mutableListOf<Entry>()
+        val referenceTimestamp = this.hourly[0].dt
+        val newTimestamps = mutableListOf<Long>()
+        for (i in this.hourly.indices) {
+            if (i != 24) {
+                val newDt = this.hourly[i].dt - referenceTimestamp
+                entries.add(Entry(newDt.toFloat(), this.hourly[i].temp.kelvinToCelsius().toFloat()))
+                newTimestamps.add(newDt)
+
+                Timber.e("Time: ${newDt.convertTimeStampToDay()}")
+                continue
+            }
+            break
+        }
+        Timber.e(entries.size.toString())
+        val lineDataset = LineDataSet(entries, "Hourly temperature")
+        lineDataset.axisDependency = YAxis.AxisDependency.LEFT
+        lineDataset.valueTextColor = Color.WHITE
+
+        lineDataset.setCircleColor(Color.WHITE)
+        lineDataset.setDrawCircleHole(false)
+        lineDataset.setDrawFilled(true)
+
+        lineDataset.fillColor = Color.parseColor("#03DAC5")
+        lineDataset.fillAlpha = 50
+        lineDataset.setDrawHighlightIndicators(false)
+        lineDataset.mode = LineDataSet.Mode.CUBIC_BEZIER
+        lineDataset.valueTextSize = 14f
+        lineDataset.cubicIntensity = 0.4f
+        lineDataset.circleRadius = 2f
+        lineDataset.enableDashedLine(15f, 10f, 0f)
+        lineDataset.valueFormatter = object : ValueFormatter() {
+
+            override fun getPointLabel(entry: Entry?): String {
+                return "${(entry!!.y).toInt()}°"
+            }
+
+            override fun getAxisLabel(value: Float, axis: AxisBase?): String {
+                return value.toLong().convertTimeStampToHour()
+            }
+        }
+
+        val dataSet = listOf<ILineDataSet>(lineDataset)
+        val lineData = LineData(dataSet)
+        nextDayTemperatureLineChart.data = lineData
+
+        val xAxis = nextDayTemperatureLineChart.xAxis
+        xAxis.position = XAxis.XAxisPosition.TOP_INSIDE
+        xAxis.setDrawGridLines(false)
+        xAxis.setDrawAxisLine(false)
+        xAxis.isGranularityEnabled = true
+        xAxis.granularity = 12f
+        xAxis.textColor = Color.WHITE
+        // xAxis.textSize = 4f
+        xAxis.setAvoidFirstLastClipping(true)
+        xAxis.setLabelCount(11, true)
+        xAxis.valueFormatter = object : ValueFormatter() {
+
+            override fun getAxisLabel(value: Float, axis: AxisBase?): String {
+                Timber.e(value.toString())
+                val index = (value / 10000).toInt()
+                return (referenceTimestamp + newTimestamps[index]).convertTimeStampToHour()
+            }
+        }
+
+        val yAxis = nextDayTemperatureLineChart.axisLeft
+        yAxis.textSize = 14f
+        yAxis.isGranularityEnabled = true
+        yAxis.granularity = 4f
+        val chartDesc = nextDayTemperatureLineChart.description
+        chartDesc.text = "Hourly temperature"
+        chartDesc.textColor = Color.WHITE
+        chartDesc.textSize = 13f
+        nextDayTemperatureLineChart.legend.isEnabled = false
+        nextDayTemperatureLineChart.axisRight.isEnabled = false
+        nextDayTemperatureLineChart.axisLeft.isEnabled = false
+        nextDayTemperatureLineChart.zoom(2f, 0f, 1f, 1f)
+        nextDayTemperatureLineChart.setPinchZoom(true)
+        nextDayTemperatureLineChart.isScaleXEnabled = false
+        nextDayTemperatureLineChart.isScaleYEnabled = false
+        nextDayTemperatureLineChart.animateXY(3000, 3000, Easing.EaseInCubic)
+        nextDayTemperatureLineChart.invalidate()
     }
 
     private fun initSearchObserver(locationName: String) {
@@ -181,6 +335,7 @@ class WeatherInfoFragment : Fragment() {
 
     private fun bindViews(searchResults: SearchResults) {
         with(searchResults) {
+            initObserver(this.name, this.coord.lat, this.coord.lon)
             tempText.text = this.main.temp.kelvinToCelsius().toString()
             cityNameText.text = "${this.name}, ${this.sys.country}"
             conditionText.text = this.weather[0].main

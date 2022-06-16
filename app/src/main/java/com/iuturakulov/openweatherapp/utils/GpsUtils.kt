@@ -16,7 +16,8 @@ import timber.log.Timber
  */
 class GpsUtils(@ApplicationContext private val context: Context) {
     private var settingsClient: SettingsClient = LocationServices.getSettingsClient(context)
-    private var locationManager: LocationManager = context.getSystemService(Context.LOCATION_SERVICE) as LocationManager
+    private var locationManager: LocationManager =
+        context.getSystemService(Context.LOCATION_SERVICE) as LocationManager
     private var locationSettingRequest: LocationSettingsRequest
     private var locationRequest: LocationRequest = LocationRequest.create()
 
@@ -46,11 +47,12 @@ class GpsUtils(@ApplicationContext private val context: Context) {
                                     val rae = (it as (ResolvableApiException))
                                     (context as Activity?)?.let { it1 ->
                                         rae.startResolutionForResult(
-                                            it1, 500)
+                                            it1, 500
+                                        )
                                     }
 
                                 } catch (sie: IntentSender.SendIntentException) {
-                                   Timber.i("PendingIntent unable to execute request.")
+                                    Timber.i("PendingIntent unable to execute request.")
                                 }
                             }
 

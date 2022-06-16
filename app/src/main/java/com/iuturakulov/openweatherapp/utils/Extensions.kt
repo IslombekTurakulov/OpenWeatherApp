@@ -44,6 +44,18 @@ fun Long.unixTimestampToTimeString(): String {
     return this.toString()
 }
 
+fun Long.convertTimeStampToHour(): String {
+    val calendar = Calendar.getInstance()
+    calendar.timeInMillis = this * 1000 // date
+    val timeZone = TimeZone.getDefault()
+    calendar.add(Calendar.MILLISECOND, timeZone.getOffset(calendar.timeInMillis))
+
+    val simpleDateFormat = SimpleDateFormat("hha", Locale.getDefault())
+
+    return simpleDateFormat.format(calendar.time)
+}
+
+
 fun Long.convertTimeStampToDay(): String {
     val calendar = Calendar.getInstance()
     calendar.timeInMillis = this * 1000
@@ -52,5 +64,5 @@ fun Long.convertTimeStampToDay(): String {
     val simpleDateFormat = SimpleDateFormat("EEE", Locale.getDefault())
     val date = calendar.get(Calendar.DATE)
     val day = simpleDateFormat.format(calendar.time)
-    return "$day\n$date'"
+    return "$day $date'"
 }
