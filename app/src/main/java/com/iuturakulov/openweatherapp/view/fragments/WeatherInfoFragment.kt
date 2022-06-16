@@ -32,6 +32,7 @@ import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
 import com.iuturakulov.openweatherapp.R
 import com.iuturakulov.openweatherapp.model.models.SearchResults
 import com.iuturakulov.openweatherapp.model.models.Weather
+import com.iuturakulov.openweatherapp.model.storage.SharedPreferencesStorage
 import com.iuturakulov.openweatherapp.utils.*
 import com.iuturakulov.openweatherapp.view.adapters.DailyAdapter
 import com.iuturakulov.openweatherapp.view.adapters.HourlyAdapter
@@ -45,7 +46,7 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class WeatherInfoFragment : Fragment() {
 
-    private val REQUEST_LOCATION_CODE = 1
+    private lateinit var sharedPreference: SharedPreferencesStorage
     private val weatherInfoViewModel: WeatherInfoViewModel by viewModels()
     private var currentChosenWeather: Weather? = null
 
@@ -75,8 +76,20 @@ class WeatherInfoFragment : Fragment() {
         })
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        sharedPreference.saveData("country_name", cityNameText.text.toString())
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        sharedPreference = SharedPreferencesStorage(requireContext())
+        if (!NetworkHelper(requireContext()).isConnected()) {
+            if (sharedPreference.getData("country_name").isNotEmpty()) {
+                initSearchObserver(sharedPreference.getData("country_name"))
+            }
+            return
+        }
         searchBar.setOnEditorActionListener(
             TextView.OnEditorActionListener { v, actionId, event ->
                 if ((actionId == EditorInfo.IME_ACTION_SEARCH || actionId == EditorInfo.IME_ACTION_DONE) && (event == null || !event.isShiftPressed)) {
@@ -211,9 +224,8 @@ class WeatherInfoFragment : Fragment() {
             maxText.text = "max ${this.daily[0].temp.max.kelvinToCelsius()}°/"
             minText.text = "min ${this.daily[0].temp.min.kelvinToCelsius()}°"
             val icon = this.current.weather[0].icon
-            val weatherIconUrl = "https://openweathermap.org/img/wn/$icon@4x.png"
             Glide.with(this@WeatherInfoFragment)
-                .load(weatherIconUrl)
+                .load(getWeatherIcon(icon))
                 .override(150, 150)
                 .fitCenter()
                 .into(curConditionIcon)
@@ -245,11 +257,9 @@ class WeatherInfoFragment : Fragment() {
         val lineDataset = LineDataSet(entries, "Hourly temperature")
         lineDataset.axisDependency = YAxis.AxisDependency.LEFT
         lineDataset.valueTextColor = Color.WHITE
-
         lineDataset.setCircleColor(Color.WHITE)
         lineDataset.setDrawCircleHole(false)
         lineDataset.setDrawFilled(true)
-
         lineDataset.fillColor = Color.parseColor("#03DAC5")
         lineDataset.fillAlpha = 50
         lineDataset.setDrawHighlightIndicators(false)
@@ -346,14 +356,15 @@ class WeatherInfoFragment : Fragment() {
             maxText.text = "max ${this.main.tempMax.kelvinToCelsius()}°/"
             minText.text = "min ${this.main.tempMin.kelvinToCelsius()}°"
             val icon = this.weather[0].icon
-            val weatherIconUrl = "https://openweathermap.org/img/wn/$icon@4x.png"
             Glide.with(this@WeatherInfoFragment)
-                .load(weatherIconUrl)
+                .load(getWeatherIcon(icon))
                 .override(150, 150)
                 .fitCenter()
                 .into(curConditionIcon)
         }
     }
+
+    private fun getWeatherIcon(icon: String) = "https://openweathermap.org/img/wn/$icon@4x.png"
 
     private fun <T> LiveData<T>.observeOnce(lifecycleOwner: LifecycleOwner, observer: Observer<T>) {
         observe(lifecycleOwner, object : Observer<T> {
