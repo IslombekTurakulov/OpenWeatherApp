@@ -43,7 +43,7 @@ class WeatherInfoViewModel @ViewModelInject constructor(
                             repository.getWeatherData(
                                 latitude,
                                 longitude,
-                                BuildConfig.APP_ID,
+                                BuildConfig.APP_ID
                             )
                         )
                     )

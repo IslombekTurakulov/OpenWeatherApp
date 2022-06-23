@@ -1,5 +1,4 @@
-/*
-package com.iuturakulov.openweatherapp.model.database
+package com.iuturakulov.openweatherapp.model.storage
 
 import android.content.Context
 import androidx.core.content.edit
@@ -8,7 +7,6 @@ import com.iuturakulov.openweatherapp.di.App
 import com.iuturakulov.openweatherapp.model.models.Place
 
 object PlaceDao {
-
     fun savePlace(place: Place) {
         sharedPreferences().edit {
             putString("place", Gson().toJson(place))
@@ -21,8 +19,6 @@ object PlaceDao {
     }
 
     fun isPlaceSaved() = sharedPreferences().contains("place")
-
     private fun sharedPreferences() =
         App.context.getSharedPreferences("app_weather", Context.MODE_PRIVATE)
-
-}*/
+}

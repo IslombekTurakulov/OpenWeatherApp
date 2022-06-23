@@ -1,4 +1,4 @@
-package com.iuturakulov.openweatherapp.storage
+package com.iuturakulov.openweatherapp.model.storage
 
 import android.content.Context
 import javax.inject.Inject

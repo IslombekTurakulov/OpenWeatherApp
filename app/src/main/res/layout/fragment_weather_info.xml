@@ -31,10 +31,10 @@
                     style="@style/Widget.Material3.Button.IconButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center"
                     android:layout_margin="@dimen/_10sdp"
                     android:layout_marginStart="@dimen/_16sdp"
                     android:contentDescription="@string/get_my_current_location"
-                    android:layout_gravity="center"
                     app:cornerRadius="@dimen/_15sdp"
                     app:icon="@drawable/my_location"
                     app:iconSize="@dimen/_24sdp"
@@ -57,9 +57,9 @@
                 android:id="@+id/cityNameLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:layout_marginTop="@dimen/_10sdp"
                 android:gravity="center"
-                android:layout_gravity="center"
                 android:orientation="horizontal"
                 android:padding="@dimen/_25sdp">
 
@@ -139,16 +139,16 @@
 
                 <TextView
                     android:id="@+id/maxText"
+                    style="@style/TextViewDark"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    style="@style/TextViewDark"
                     android:text="max " />
 
                 <TextView
                     android:id="@+id/minText"
+                    style="@style/TextViewDark"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    style="@style/TextViewDark"
                     android:text="/ min" />
             </LinearLayout>
 
@@ -156,9 +156,9 @@
                 android:id="@+id/windHumLayout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
                 android:layout_marginTop="@dimen/_10sdp"
                 android:gravity="center"
-                android:layout_gravity="center_horizontal"
                 android:orientation="horizontal">
 
                 <LinearLayout
@@ -168,37 +168,37 @@
                     android:orientation="horizontal">
 
                     <com.google.android.material.button.MaterialButton
+                        style="@style/Widget.Material3.Button.IconButton"
                         android:layout_width="@dimen/_20ssp"
                         android:layout_height="@dimen/_20ssp"
-                        style="@style/Widget.Material3.Button.IconButton"
                         android:contentDescription="@string/wind_icon_image"
                         android:padding="@dimen/_3sdp"
                         app:icon="@drawable/ic_baseline_air_24" />
 
                     <TextView
                         android:id="@+id/windText"
+                        style="@style/TextViewDark"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        style="@style/TextViewDark"
                         android:paddingHorizontal="@dimen/_7sdp"
                         android:text="0 km/h" />
 
                 </LinearLayout>
 
                 <com.google.android.material.button.MaterialButton
+                    style="@style/Widget.Material3.Button.IconButton"
                     android:layout_width="@dimen/_20ssp"
                     android:layout_height="@dimen/_20ssp"
-                    style="@style/Widget.Material3.Button.IconButton"
                     android:contentDescription="@string/humidity_icon_image"
                     android:padding="@dimen/_3sdp"
                     app:icon="@drawable/ic_baseline_grain_24" />
 
                 <TextView
                     android:id="@+id/humidityText"
+                    style="@style/TextViewDark"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingHorizontal="3dp"
-                    style="@style/TextViewDark"
                     android:text="0%" />
 
             </LinearLayout>
@@ -209,15 +209,15 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_20sdp"
                 android:layout_marginTop="@dimen/_10sdp"
-                android:gravity="center"
-                android:layout_marginEnd="@dimen/_10sdp">
+                android:layout_marginEnd="@dimen/_10sdp"
+                android:gravity="center">
 
                 <TextView
                     android:id="@+id/heading"
+                    style="@style/TextViewDark"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/today"
-                    style="@style/TextViewDark"
                     android:textAlignment="center"
                     android:textSize="@dimen/_20ssp" />
 
@@ -235,7 +235,8 @@
                 </LinearLayout>
             </LinearLayout>
 
-            <androidx.recyclerview.widget.RecyclerView
+            <!-- Next header -->
+            <com.todkars.shimmer.ShimmerRecyclerView
                 android:id="@+id/weatherConditionRecyclerView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -243,24 +244,25 @@
                 android:orientation="horizontal"
                 android:overScrollMode="never"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:shimmer_recycler_item_count="10"
+                app:shimmer_recycler_layout="@layout/weather_item_layout"
                 tools:listitem="@layout/weather_item" />
 
-            <!-- Next header -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_20sdp"
                 android:layout_marginTop="@dimen/_10sdp"
-                android:gravity="center"
-                android:layout_marginEnd="@dimen/_10sdp">
+                android:layout_marginEnd="@dimen/_10sdp"
+                android:gravity="center">
 
                 <TextView
                     android:id="@+id/nextForecast"
+                    style="@style/TextViewDark"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/next_forecast"
                     android:textAlignment="center"
-                    style="@style/TextViewDark"
                     android:textSize="@dimen/_20ssp" />
 
                 <LinearLayout
@@ -278,7 +280,7 @@
             </LinearLayout>
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rvNextWeather"
+                android:id="@+id/recyclerViewNextWeather"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_10sdp"
