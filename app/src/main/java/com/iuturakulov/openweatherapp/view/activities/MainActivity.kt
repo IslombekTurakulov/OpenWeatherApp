@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.NavHostFragment
 import com.iuturakulov.openweatherapp.R
 import com.iuturakulov.openweatherapp.model.storage.SharedPreferencesStorage
+import com.iuturakulov.openweatherapp.utils.STORAGE_NAME
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.*
 
@@ -27,7 +28,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         sharedPreference = SharedPreferencesStorage(this)
-        editor = this.getSharedPreferences("OpenWeatherApp", Context.MODE_PRIVATE).edit()
+        editor = this.getSharedPreferences(STORAGE_NAME, Context.MODE_PRIVATE).edit()
         editor.commit()
         if (sharedPreference.getData("app_theme").isNotEmpty()) {
             changeLanguage()

@@ -32,6 +32,7 @@ import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
 import com.iuturakulov.openweatherapp.R
 import com.iuturakulov.openweatherapp.model.models.SearchResults
 import com.iuturakulov.openweatherapp.model.models.Weather
+import com.iuturakulov.openweatherapp.model.storage.RepositoryDAO
 import com.iuturakulov.openweatherapp.model.storage.SharedPreferencesStorage
 import com.iuturakulov.openweatherapp.utils.*
 import com.iuturakulov.openweatherapp.view.adapters.DailyAdapter
@@ -83,12 +84,6 @@ class WeatherInfoFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         sharedPreference = SharedPreferencesStorage(requireContext())
-        if (!NetworkHelper(requireContext()).isConnected()) {
-            if (sharedPreference.getData("country_name").isNotEmpty()) {
-                initSearchObserver(sharedPreference.getData("country_name"))
-            }
-            return
-        }
         searchBar.setOnEditorActionListener(
             TextView.OnEditorActionListener { v, actionId, event ->
                 if ((actionId == EditorInfo.IME_ACTION_SEARCH || actionId == EditorInfo.IME_ACTION_DONE) && (event == null || !event.isShiftPressed)) {
@@ -117,6 +112,15 @@ class WeatherInfoFragment : Fragment() {
             sharingIntent.putExtra(Intent.EXTRA_SUBJECT, shareSub)
             sharingIntent.putExtra(Intent.EXTRA_TEXT, shareNextWeather())
             startActivity(Intent.createChooser(sharingIntent, "Share using"))
+        }
+        if (!NetworkHelper(requireContext()).isConnected()) {
+            if (RepositoryDAO.getSavedPlace() != null) {
+                bindViews(RepositoryDAO.getSavedPlace()!!)
+                Toast.makeText(requireContext(), "Got cache offline weather", Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(requireContext(), "Internet connection error", Toast.LENGTH_SHORT).show()
+            }
+            return
         }
         current_location.setOnClickListener {
             getLocation()
@@ -344,7 +348,10 @@ class WeatherInfoFragment : Fragment() {
 
     private fun bindViews(searchResults: SearchResults) {
         with(searchResults) {
-            initObserver(this.name, this.coord.lat, this.coord.lon)
+            RepositoryDAO.savePlace(searchResults)
+            if (!NetworkHelper(requireContext()).isConnected()) {
+                initObserver(this.name, this.coord.lat, this.coord.lon)
+            }
             tempText.text = this.main.temp.kelvinToCelsius().toString()
             cityNameText.text = "${this.name}, ${this.sys.country}"
             conditionText.text = this.weather[0].main
