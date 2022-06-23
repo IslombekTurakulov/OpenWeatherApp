@@ -5,20 +5,26 @@ import androidx.core.content.edit
 import com.google.gson.Gson
 import com.iuturakulov.openweatherapp.di.App
 import com.iuturakulov.openweatherapp.model.models.Place
+import com.iuturakulov.openweatherapp.model.models.SearchResults
+import com.iuturakulov.openweatherapp.model.models.Weather
+import com.iuturakulov.openweatherapp.utils.STORAGE_NAME
 
 object PlaceDao {
-    fun savePlace(place: Place) {
+    fun savePlace(place: Weather) {
         sharedPreferences().edit {
             putString("place", Gson().toJson(place))
         }
     }
 
-    fun getSavedPlace(): Place {
+    fun getSavedPlace(): Weather? {
         val placeJson = sharedPreferences().getString("place", "")
-        return Gson().fromJson(placeJson, Place::class.java)
+        if (placeJson.isNullOrEmpty()) {
+            return null
+        }
+        return Gson().fromJson(placeJson, Weather::class.java)
     }
 
     fun isPlaceSaved() = sharedPreferences().contains("place")
     private fun sharedPreferences() =
-        App.context.getSharedPreferences("app_weather", Context.MODE_PRIVATE)
+        App.context.getSharedPreferences(STORAGE_NAME, Context.MODE_PRIVATE)
 }

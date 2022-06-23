@@ -32,6 +32,7 @@ import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
 import com.iuturakulov.openweatherapp.R
 import com.iuturakulov.openweatherapp.model.models.SearchResults
 import com.iuturakulov.openweatherapp.model.models.Weather
+import com.iuturakulov.openweatherapp.model.storage.RepositoryDAO
 import com.iuturakulov.openweatherapp.model.storage.SharedPreferencesStorage
 import com.iuturakulov.openweatherapp.utils.*
 import com.iuturakulov.openweatherapp.view.adapters.DailyAdapter
@@ -83,12 +84,6 @@ class WeatherInfoFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         sharedPreference = SharedPreferencesStorage(requireContext())
-        if (!NetworkHelper(requireContext()).isConnected()) {
-            if (sharedPreference.getData("country_name").isNotEmpty()) {
-                initSearchObserver(sharedPreference.getData("country_name"))
-            }
-            return
-        }
         searchBar.setOnEditorActionListener(
             TextView.OnEditorActionListener { v, actionId, event ->
                 if ((actionId == EditorInfo.IME_ACTION_SEARCH || actionId == EditorInfo.IME_ACTION_DONE) && (event == null || !event.isShiftPressed)) {
@@ -120,6 +115,14 @@ class WeatherInfoFragment : Fragment() {
         }
         current_location.setOnClickListener {
             getLocation()
+        }
+        if (!NetworkHelper(requireContext()).isConnected()) {
+            when {
+                RepositoryDAO.isPlaceSaved() -> {
+                    currentChosenWeather = RepositoryDAO.getSavedPlace()!!
+                    bindViews(RepositoryDAO.getSavedPlace()!!)
+                }
+            }
         }
     }
 
@@ -193,6 +196,7 @@ class WeatherInfoFragment : Fragment() {
                     Toast.makeText(requireContext(), "Success", Toast.LENGTH_SHORT).show()
                     bindViews(it.data?.body()!!)
                     currentChosenWeather = it.data.body()!!
+                    RepositoryDAO.savePlace(it.data.body()!!)
                 }
                 Status.LOADING -> {
                     Toast.makeText(requireContext(), "Loading...", Toast.LENGTH_SHORT).show()
@@ -228,7 +232,9 @@ class WeatherInfoFragment : Fragment() {
                 .override(150, 150)
                 .fitCenter()
                 .into(curConditionIcon)
-            initializeLineChartTemperature()
+            if (NetworkHelper(requireContext()).isConnected()) {
+                initializeLineChartTemperature()
+            }
         }
     }
 

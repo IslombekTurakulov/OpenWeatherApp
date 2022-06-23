@@ -1,11 +1,12 @@
 package com.iuturakulov.openweatherapp.model.storage
 
 import android.content.Context
+import com.iuturakulov.openweatherapp.utils.STORAGE_NAME
 import javax.inject.Inject
 
 class SharedPreferencesStorage @Inject constructor(context: Context): Storage {
 
-    private val sharedPreferences = context.getSharedPreferences("appStorage", Context.MODE_PRIVATE)
+    private val sharedPreferences = context.getSharedPreferences(STORAGE_NAME, Context.MODE_PRIVATE)
 
     override fun saveData(key: String, value: String) {
         with(sharedPreferences.edit())

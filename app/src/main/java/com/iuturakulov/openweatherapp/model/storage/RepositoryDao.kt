@@ -1,9 +1,9 @@
 package com.iuturakulov.openweatherapp.model.storage
 
-import com.iuturakulov.openweatherapp.model.models.Place
+import com.iuturakulov.openweatherapp.model.models.Weather
 
 object RepositoryDAO {
-    fun savePlace(place: Place) = PlaceDao.savePlace(place)
+    fun savePlace(place: Weather) = PlaceDao.savePlace(place)
 
     fun getSavedPlace() = PlaceDao.getSavedPlace()
 
