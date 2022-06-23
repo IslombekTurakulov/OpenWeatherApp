@@ -14,7 +14,7 @@
     <string name="logo_image">Иконка лого</string>
     <string name="info_menu_text">Погода</string>
     <string name="settings_menu_text">Настройки</string>
-    <string name="dark_theme">Тёмная тема</string>
+    <string name="change_theme_text">Поменять тему</string>
     <string name="language_settings">Язык</string>
     <string name="weather_condition">состояние погоды -</string>
     <string name="weather_country">Местоположение:</string>

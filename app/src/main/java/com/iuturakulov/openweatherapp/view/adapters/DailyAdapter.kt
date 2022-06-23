@@ -42,7 +42,7 @@ class DailyAdapter(
 
     class ViewHolder(
         val context: Context,
-        val view: View,
+        val view: View
     ) : RecyclerView.ViewHolder(view.rootView) {
         fun bind(forecast: DailyForecast) {
             try {

@@ -78,7 +78,6 @@ class WeatherInfoFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        sharedPreference.saveData("country_name", cityNameText.text.toString())
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -199,7 +198,7 @@ class WeatherInfoFragment : Fragment() {
                     Toast.makeText(requireContext(), "Loading...", Toast.LENGTH_SHORT).show()
                 }
                 Status.ERROR -> {
-                    Toast.makeText(requireContext(), "Error", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), it.msg!!, Toast.LENGTH_SHORT).show()
                 }
             }
         }
@@ -210,10 +209,10 @@ class WeatherInfoFragment : Fragment() {
             val hourlyAdapter = HourlyAdapter(requireContext(), this.hourly.subList(0, 24))
             val dailyAdapter = DailyAdapter(requireContext(), this.daily)
             weatherConditionRecyclerView.adapter = hourlyAdapter
-            rvNextWeather.adapter = dailyAdapter
+            recyclerViewNextWeather.adapter = dailyAdapter
             weatherConditionRecyclerView.layoutManager =
                 LinearLayoutManager(requireActivity(), LinearLayoutManager.HORIZONTAL, false)
-            rvNextWeather.layoutManager =
+            recyclerViewNextWeather.layoutManager =
                 LinearLayoutManager(requireActivity(), LinearLayoutManager.VERTICAL, false)
             tempText.text = "${data.current.temp.kelvinToCelsius()}"
             conditionText.text = this.current.weather[0].main
@@ -334,7 +333,7 @@ class WeatherInfoFragment : Fragment() {
                         Toast.makeText(requireContext(), "Loading...", Toast.LENGTH_SHORT).show()
                     }
                     Status.ERROR -> {
-                        Toast.makeText(requireContext(), "Error...", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(requireContext(), it.msg!!, Toast.LENGTH_SHORT).show()
                     }
                 }
             } catch (e: NullPointerException) {
