@@ -256,7 +256,7 @@
                     </LinearLayout>
                 </LinearLayout>
 
-                <androidx.recyclerview.widget.RecyclerView
+                <com.todkars.shimmer.ShimmerRecyclerView
                     android:id="@+id/weatherConditionRecyclerView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -264,6 +264,8 @@
                     android:orientation="horizontal"
                     android:overScrollMode="never"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    app:shimmer_recycler_item_count="10"
+                    app:shimmer_recycler_layout="@layout/weather_item_layout"
                     tools:listitem="@layout/weather_item" />
 
                 <!-- Next header -->
@@ -299,7 +301,7 @@
                 </LinearLayout>
 
                 <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rvNextWeather"
+                    android:id="@+id/recyclerViewNextWeather"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_10sdp"
