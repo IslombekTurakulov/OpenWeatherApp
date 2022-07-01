@@ -15,9 +15,6 @@ import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.github.mikephil.charting.animation.Easing
@@ -87,6 +84,8 @@ class WeatherInfoFragment : Fragment() {
                         initSearchObserver(city)
                         return@OnEditorActionListener true
                     } else {
+                        Toast.makeText(requireContext(), "Please enter a city", Toast.LENGTH_SHORT)
+                            .show()
                         return@OnEditorActionListener false
                     }
                 }
@@ -289,7 +288,6 @@ class WeatherInfoFragment : Fragment() {
         xAxis.isGranularityEnabled = true
         xAxis.granularity = 12f
         xAxis.textColor = Color.WHITE
-        // xAxis.textSize = 4f
         xAxis.setAvoidFirstLastClipping(true)
         xAxis.setLabelCount(11, true)
         xAxis.valueFormatter = object : ValueFormatter() {
@@ -361,6 +359,4 @@ class WeatherInfoFragment : Fragment() {
                 .into(curConditionIcon)
         }
     }
-
-    private fun getWeatherIcon(icon: String) = "https://openweathermap.org/img/wn/$icon@4x.png"
 }

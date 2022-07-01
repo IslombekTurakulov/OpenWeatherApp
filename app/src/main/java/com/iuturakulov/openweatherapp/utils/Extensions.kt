@@ -12,6 +12,7 @@ fun setTheme(flag: Boolean) = when {
     else -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
 }
 
+fun getWeatherIcon(icon: String) = "https://openweathermap.org/img/wn/$icon@4x.png"
 
 fun Double.kelvinToCelsius(): Int {
     return (this - 273.15).toInt()
