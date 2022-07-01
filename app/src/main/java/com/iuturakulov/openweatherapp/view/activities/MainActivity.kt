@@ -20,8 +20,6 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var sharedPreference: SharedPreferencesStorage
     private lateinit var editor: SharedPreferences.Editor
-    /*
-      private lateinit var navController: NavController*/
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,39 +30,6 @@ class MainActivity : AppCompatActivity() {
         if (sharedPreference.getData("app_theme").isNotEmpty()) {
             changeLanguage()
         }
-       /* OptionsSheet().show(this) {
-            title("Text message")
-            with(
-                Option(R.drawable.ic_baseline_texture_24, getString(R.string.change_theme_text)),
-                Option(R.drawable.ic_baseline_language_24, getString(R.string.language_settings)),
-            )
-            onPositive { index: Int, option: Option ->
-                if (index == 0) {
-                    sharedPreference.saveBool(
-                        "USE_DARK_THEME",
-                        !sharedPreference.getBool("USE_DARK_THEME")
-                    )
-                    editor.commit()
-                    setTheme(
-                        if (sharedPreference.getBool(
-                                "USE_DARK_THEME"
-                            )
-                        ) R.style.AppTheme_Dark else R.style.AppTheme
-                    )
-                    setContentView(R.layout.activity_main)
-                } else {
-                    changeLanguage()
-                    if (sharedPreference.getData("app_theme") == "RU") {
-                        sharedPreference.saveData("app_theme", "en")
-                    } else {
-                        sharedPreference.saveData("app_theme", "ru")
-                    }
-                    editor.commit()
-                }
-            }
-        }*/
-/*        navController = findNavController(R.id.nav_graph)
-        setupSmoothBottomMenu()*/
     }
 
     private fun changeLanguage() {
@@ -85,34 +50,4 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
-
-    /* override fun onCreateOptionsMenu(menu: Menu): Boolean {
-         menuInflater.inflate(R.menu.main_menu, menu)
-         return true
-     }
-
-     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-         when (item.itemId) {
-             R.id.first_fragment -> {
-                 showToast("Weather fragment selected")
-                 Timber.i("Weather fragment selected")
-             }
-
-             R.id.second_fragment -> {
-                 showToast("Settings fragment selected")
-                 Timber.i("Weather fragment selected")
-             }
-         }
-         return super.onOptionsItemSelected(item)
-     }
-
-     private fun showToast(msg: String) {
-         Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
-     }
-
-     private fun setupSmoothBottomMenu() {
-         val popupMenu = PopupMenu(this, null)
-         popupMenu.inflate(R.menu.main_menu)
-         bottomBar.setupWithNavController(popupMenu.menu, navController)
-     }*/
 }
