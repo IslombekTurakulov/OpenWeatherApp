@@ -10,6 +10,7 @@ import com.bumptech.glide.annotation.GlideModule
 import com.iuturakulov.openweatherapp.R
 import com.iuturakulov.openweatherapp.model.models.DailyForecast
 import com.iuturakulov.openweatherapp.utils.convertTimeStampToDay
+import com.iuturakulov.openweatherapp.utils.getWeatherIcon
 import com.iuturakulov.openweatherapp.utils.kelvinToCelsius
 import kotlinx.android.synthetic.main.fragment_weather_info.view.*
 import kotlinx.android.synthetic.main.next_weather_item.view.*
@@ -50,10 +51,8 @@ class DailyAdapter(
                     itemView.nextDayText.text = "${(this.dt).convertTimeStampToDay()} ${this.weather[0].main}"
                     itemView.nextMaxText.text = this.temp.max.kelvinToCelsius().toString()
                     itemView.nextMinText.text = this.temp.min.kelvinToCelsius().toString()
-                    val weatherIconUrl =
-                        "https://openweathermap.org/img/wn/${this.weather[0].icon}@4x.png"
                     Glide.with(context)
-                        .load(weatherIconUrl)
+                        .load(getWeatherIcon(this.weather[0].icon))
                         .override(150, 150)
                         .fitCenter()
                         .into(view.nextIcon)

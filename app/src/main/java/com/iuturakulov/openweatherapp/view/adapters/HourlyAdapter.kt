@@ -9,6 +9,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.annotation.GlideModule
 import com.iuturakulov.openweatherapp.R
 import com.iuturakulov.openweatherapp.model.models.HourlyForecast
+import com.iuturakulov.openweatherapp.utils.getWeatherIcon
 import com.iuturakulov.openweatherapp.utils.kelvinToCelsius
 import com.iuturakulov.openweatherapp.utils.unixTimestampToTimeString
 import kotlinx.android.synthetic.main.weather_item.view.*
@@ -21,15 +22,15 @@ class HourlyAdapter(
 ) : RecyclerView.Adapter<HourlyAdapter.HourlyHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HourlyHolder {
-        var vh: HourlyHolder? = null
+        var hourlyHolder: HourlyHolder? = null
         try {
             val view: View =
                 LayoutInflater.from(context).inflate(R.layout.weather_item, parent, false)
-            vh = HourlyHolder(context, view)
-        } catch (e: Exception) {
-            Timber.e(e.message!!)
+            hourlyHolder = HourlyHolder(context, view)
+        } catch (exception: Exception) {
+            Timber.e(exception.message!!)
         }
-        return vh!!
+        return hourlyHolder!!
     }
 
     override fun getItemCount(): Int = hourlyForecast.size
@@ -47,9 +48,8 @@ class HourlyAdapter(
                 itemView.cardWind.text = "${this.windSpeed} km/h"
                 itemView.cardTemp.text = "${this.temp.kelvinToCelsius()}°"
                 val icon = this.weather[0].icon
-                val weatherIconUrl = "https://openweathermap.org/img/wn/$icon@4x.png"
                 Glide.with(context)
-                    .load(weatherIconUrl)
+                    .load(getWeatherIcon(icon))
                     .override(150, 150)
                     .fitCenter()
                     .into(view.cardIcon)
