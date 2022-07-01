@@ -6,7 +6,6 @@
     android:padding="@dimen/_5sdp">
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/cardView"
         android:layout_width="@dimen/_110sdp"
         android:layout_height="@dimen/_150sdp"
         app:cardCornerRadius="@dimen/_10sdp"
@@ -14,7 +13,6 @@
         app:cardPreventCornerOverlap="true">
 
         <LinearLayout
-            android:id="@+id/cardLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/hse_dark_blue"

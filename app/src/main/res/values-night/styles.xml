@@ -8,31 +8,8 @@
         <item name="android:windowAnimationStyle">@style/WindowAnimationTransition</item>
     </style>
 
-    <style name="WeatherAppTheme" parent="Theme.AppCompat">
-        <item name="colorPrimary">@color/white</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
-        <item name="android:windowAnimationStyle">@style/WindowAnimationTransition</item>
-    </style>
-
-    <style name="AppTheme.Dark" parent="Theme.MaterialComponents.DayNight.NoActionBar">
-        <item name="colorPrimary">@color/white</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
-        <item name="android:windowBackground">@color/hse_gray</item>
-        <item name="textAppearanceBody1">@style/TextViewDark</item>
-    </style>
-
     <style name="TextViewDark" parent="Widget.AppCompat.TextView">
         <item name="android:textColor">@color/white</item>
-    </style>
-
-    <style name="MyAppTheme.TextInputLayout" parent="@android:style/TextAppearance">
-        <item name="android:textColor">@color/hse_red</item>
-    </style>
-
-    <style name="imageButtonStyle" parent="Widget.Material3.Button">
-        <item name="iconTint">@color/white</item>
     </style>
 
 
@@ -54,11 +31,6 @@
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
-    </style>
-
-    <style name="CustomText">
-        <item name="android:textAllCaps">true</item>
-        <item name="android:textSize">13sp</item>
     </style>
 
     <style name="WindowAnimationTransition">

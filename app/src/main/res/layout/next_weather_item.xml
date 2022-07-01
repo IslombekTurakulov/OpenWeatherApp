@@ -4,7 +4,6 @@
     android:layout_height="wrap_content">
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/cardView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
@@ -12,7 +11,6 @@
         app:cardPreventCornerOverlap="true">
 
         <LinearLayout
-            android:id="@+id/nextLayout"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:background="@color/hse_dark_blue"
@@ -39,7 +37,6 @@
                 android:contentDescription="Condition icon" />
 
             <LinearLayout
-                android:id="@+id/minMaxText"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="3"
