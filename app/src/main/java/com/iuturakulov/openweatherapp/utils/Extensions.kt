@@ -1,6 +1,9 @@
 package com.iuturakulov.openweatherapp.utils
 
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.Observer
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -12,6 +15,15 @@ fun setTheme(flag: Boolean) = when {
 
 fun Double.kelvinToCelsius(): Int {
     return (this - 273.15).toInt()
+}
+
+fun <T> LiveData<T>.observeOnce(lifecycleOwner: LifecycleOwner, observer: Observer<T>) {
+    observe(lifecycleOwner, object : Observer<T> {
+        override fun onChanged(t: T?) {
+            observer.onChanged(t)
+            removeObserver(this)
+        }
+    })
 }
 
 fun Long.unixTimestampToTimeString(): String {

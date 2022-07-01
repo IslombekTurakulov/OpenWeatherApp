@@ -1,14 +1,11 @@
 package com.iuturakulov.openweatherapp.viewModel.viewModels
 
 import androidx.hilt.lifecycle.ViewModelInject
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.iuturakulov.openweatherapp.BuildConfig
 import com.iuturakulov.openweatherapp.model.models.SearchResults
 import com.iuturakulov.openweatherapp.model.models.Weather
-import com.iuturakulov.openweatherapp.utils.NetworkHelper
+import com.iuturakulov.openweatherapp.utils.NetworkVerification
 import com.iuturakulov.openweatherapp.utils.Resource
 import com.iuturakulov.openweatherapp.viewModel.repositories.WeatherRepositoryImpl
 import kotlinx.coroutines.Dispatchers
@@ -20,7 +17,7 @@ import java.net.SocketException
 import java.net.SocketTimeoutException
 
 class WeatherInfoViewModel @ViewModelInject constructor(
-    private val networkHelper: NetworkHelper,
+    private val networkHelper: NetworkVerification,
     private val repository: WeatherRepositoryImpl
 ) : ViewModel() {
 
@@ -77,12 +74,13 @@ class WeatherInfoViewModel @ViewModelInject constructor(
             searchedListData.postValue(Resource.loading(null))
             if (networkHelper.isConnected()) {
                 try {
+                    val data = repository.getSearchLocationData(
+                        locationName,
+                        BuildConfig.APP_ID
+                    )
                     searchedListData.postValue(
                         Resource.success(
-                            repository.getSearchLocationData(
-                                locationName,
-                                BuildConfig.APP_ID
-                            )
+                            data
                         )
                     )
                 } catch (ex: HttpException) {

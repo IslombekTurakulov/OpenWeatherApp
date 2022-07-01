@@ -49,7 +49,6 @@ class WeatherInfoFragment : Fragment() {
 
     private lateinit var sharedPreference: SharedPreferencesStorage
     private val weatherInfoViewModel: WeatherInfoViewModel by viewModels()
-    private var currentChosenWeather: Weather? = null
 
     @Inject
     lateinit var locUtils: LocationUtils
@@ -75,10 +74,6 @@ class WeatherInfoFragment : Fragment() {
                 }
             }
         })
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -116,10 +111,9 @@ class WeatherInfoFragment : Fragment() {
         current_location.setOnClickListener {
             getLocation()
         }
-        if (!NetworkHelper(requireContext()).isConnected()) {
+        if (!NetworkVerification(requireContext()).isConnected()) {
             when {
                 RepositoryDAO.isPlaceSaved() -> {
-                    currentChosenWeather = RepositoryDAO.getSavedPlace()!!
                     bindViews(RepositoryDAO.getSavedPlace()!!)
                 }
             }
@@ -129,7 +123,7 @@ class WeatherInfoFragment : Fragment() {
     private fun shareTodayWeather(): String {
         val builder: StringBuilder = java.lang.StringBuilder()
         builder.append("${getString(R.string.weather_country)} ${cityNameText.text}\n")
-        for (hourlyWeather in currentChosenWeather!!.hourly) {
+        for (hourlyWeather in weatherInfoViewModel.weatherData.value?.data?.body()!!.hourly) {
             builder.append(
                 "\n${hourlyWeather.dt.convertTimeStampToHour()}: ${getString(R.string.weather_condition)} ${hourlyWeather.weather[0].main}, ${hourlyWeather.temp.kelvinToCelsius()}°, ${
                     getString(
@@ -144,7 +138,7 @@ class WeatherInfoFragment : Fragment() {
     private fun shareNextWeather(): String {
         val builder: StringBuilder = java.lang.StringBuilder()
         builder.append("${getString(R.string.weather_country)} ${cityNameText.text}\n")
-        for (hourlyWeather in currentChosenWeather!!.daily) {
+        for (hourlyWeather in weatherInfoViewModel.weatherData.value?.data?.body()!!.daily) {
             builder.append(
                 "\n${hourlyWeather.dt.convertTimeStampToDay()}: ${getString(R.string.weather_condition)} ${hourlyWeather.weather[0].main}, ${hourlyWeather.temp.day.kelvinToCelsius()}°, ${
                     getString(
@@ -195,7 +189,6 @@ class WeatherInfoFragment : Fragment() {
                 Status.SUCCESS -> {
                     Toast.makeText(requireContext(), "Success", Toast.LENGTH_SHORT).show()
                     bindViews(it.data?.body()!!)
-                    currentChosenWeather = it.data.body()!!
                     RepositoryDAO.savePlace(it.data.body()!!)
                 }
                 Status.LOADING -> {
@@ -206,6 +199,7 @@ class WeatherInfoFragment : Fragment() {
                 }
             }
         }
+        initSearchObserver(location)
     }
 
     private fun bindViews(data: Weather) {
@@ -232,7 +226,7 @@ class WeatherInfoFragment : Fragment() {
                 .override(150, 150)
                 .fitCenter()
                 .into(curConditionIcon)
-            if (NetworkHelper(requireContext()).isConnected()) {
+            if (NetworkVerification(requireContext()).isConnected()) {
                 initializeLineChartTemperature()
             }
         }
@@ -350,7 +344,6 @@ class WeatherInfoFragment : Fragment() {
 
     private fun bindViews(searchResults: SearchResults) {
         with(searchResults) {
-            initObserver(this.name, this.coord.lat, this.coord.lon)
             tempText.text = this.main.temp.kelvinToCelsius().toString()
             cityNameText.text = "${this.name}, ${this.sys.country}"
             conditionText.text = this.weather[0].main
@@ -370,13 +363,4 @@ class WeatherInfoFragment : Fragment() {
     }
 
     private fun getWeatherIcon(icon: String) = "https://openweathermap.org/img/wn/$icon@4x.png"
-
-    private fun <T> LiveData<T>.observeOnce(lifecycleOwner: LifecycleOwner, observer: Observer<T>) {
-        observe(lifecycleOwner, object : Observer<T> {
-            override fun onChanged(t: T?) {
-                observer.onChanged(t)
-                removeObserver(this)
-            }
-        })
-    }
 }

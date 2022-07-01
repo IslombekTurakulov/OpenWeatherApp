@@ -8,7 +8,7 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class NetworkHelper @Inject constructor(@ApplicationContext private val context: Context) {
+class NetworkVerification @Inject constructor(@ApplicationContext private val context: Context) {
     fun isConnected(): Boolean {
         val connectivityManager =
             context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager

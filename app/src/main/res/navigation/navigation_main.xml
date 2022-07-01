@@ -14,10 +14,4 @@
             android:id="@+id/action_firstFragment_to_secondFragment"
             app:destination="@id/second_fragment" />
     </fragment>
-
-    <fragment
-        android:id="@+id/second_fragment"
-        android:name="com.iuturakulov.openweatherapp.view.fragments.SettingsFragment"
-        android:label="@string/settings_menu_text"
-        tools:layout="@layout/fragment_settings" />
 </navigation>
